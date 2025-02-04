@@ -2,9 +2,9 @@
   "compilerOptions": {
     "target": "es2019",
     "module": "commonjs",
-    "allowJs": true, 
-    "checkJs": false, 
-    "jsx": "react-jsx", 
+    "allowJs": true,
+    "checkJs": false,
+    "jsx": "react-jsx",
     "declaration": true,
     "outDir": "./dist",
     "rootDir": "./src",
