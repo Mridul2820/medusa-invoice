@@ -33,23 +33,7 @@ const DATABASE_URL =
 
 const REDIS_URL = process.env.REDIS_URL || "redis://localhost:6379";
 
-const plugins = [
-  {
-    resolve: "@medusajs/admin",
-    options: {
-      autoRebuild: true,
-      develop: {
-        open: process.env.OPEN_BROWSER !== "false",
-      },
-      path: "/admin",
-      outDir: "build",
-    },
-  },
-  {
-    resolve: "@rsc-labs/medusa-documents",
-    options: {},
-  },
-];
+const plugins = [];
 
 const modules = {};
 
