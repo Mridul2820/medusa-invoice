@@ -39,25 +39,25 @@ export function generateCustomerInformation(doc, y, order: Order) {
   if (order.shipping_address) {
     doc
       .fontSize(10)
-      .text("Ship to: ", 50, customerInformationTop, { align: "right" })
+      .text("Ship to: ", 230, customerInformationTop, { align: "left" })
       .text(
         `${order.shipping_address.first_name} ${order.shipping_address.last_name}`,
-        50,
+        230,
         customerInformationTop + 15,
-        { align: "right" }
+        { align: "left" }
       )
       .text(
         `${order.shipping_address.city} ${order.shipping_address.postal_code}`,
-        50,
+        230,
         customerInformationTop + 30,
-        { align: "right" }
+        { align: "left" }
       )
       .moveDown();
     const shipAddress = order.shipping_address.address_1;
     heightOfShipToAddress = doc.heightOfString(shipAddress, { width: 150 });
     doc
-      .text(shipAddress, 360, customerInformationTop + 45, {
-        align: "right",
+      .text(shipAddress, 230, customerInformationTop + 45, {
+        align: "left",
         widdth: 150,
       })
       .moveDown();

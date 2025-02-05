@@ -2,13 +2,6 @@ import { Order } from "@medusajs/medusa";
 import { generateHr } from "./hr";
 
 export function generateCustomerInformation(doc, y, order: Order) {
-  doc
-    .fillColor("#444444")
-    .fontSize(20)
-    .text("Details", 50, y + 30);
-
-  generateHr(doc, y + 55);
-
   const customerInformationTop = y + 70;
 
   let heightOfBillToAddress: number | undefined;
@@ -46,28 +39,28 @@ export function generateCustomerInformation(doc, y, order: Order) {
   if (order.shipping_address) {
     doc
       .fontSize(10)
-      .text("Ship to:", 50, customerInformationTop, {
-        align: "right",
+      .text("Ship to:", 230, customerInformationTop, {
+        align: "left",
       })
       .text(
         `${order.shipping_address.first_name} ${order.shipping_address.last_name}`,
-        50,
+        230,
         customerInformationTop + 15,
-        { align: "right" }
+        { align: "left" }
       )
       .text(
         `${order.shipping_address.city} ${order.shipping_address.postal_code}`,
-        50,
+        230,
         customerInformationTop + 30,
-        { align: "right" }
+        { align: "left" }
       )
       .moveDown();
     const shipAddress = order.shipping_address.address_1;
     heightOfShipToAddress = doc.heightOfString(shipAddress, { width: 150 });
     doc
-      .text(shipAddress, 360, customerInformationTop + 45, {
-        align: "right",
-        widdth: 150,
+      .text(shipAddress, 230, customerInformationTop + 45, {
+        align: "left",
+        width: 150,
       })
       .moveDown();
   }
