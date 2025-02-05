@@ -1,10 +1,10 @@
 export function generateTnc(doc, y: number): number {
-  const invoiceInformationTop = y + 80;
+  const invoiceInformationTop = y + 30;
 
   doc
     .fillColor("#444444")
     .fontSize(10)
-    .text("Terms & Condition:", 150, invoiceInformationTop, {
+    .text("Terms & Condition:", 50, invoiceInformationTop, {
       align: "left",
     })
     .text(

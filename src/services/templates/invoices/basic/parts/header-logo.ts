@@ -8,7 +8,7 @@ export async function generateHeaderLogo(
   if (responseImage.ok && responseImage.status == 200) {
     const responseImageBuffer = await responseImage.arrayBuffer();
     const responseBuffer = Buffer.from(responseImageBuffer);
-    doc.image(responseBuffer, 50, y, { align: "left", width: 90 });
+    doc.image(responseBuffer, 50, y, { align: "left", width: 70 });
   } else {
     doc.text("Cannot get logo from provided URL"),
       390,
