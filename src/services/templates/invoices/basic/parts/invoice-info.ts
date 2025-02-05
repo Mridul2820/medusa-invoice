@@ -16,7 +16,7 @@ export function generateInvoiceInformation(
   });
 
   const startX = 180;
-  const startY = y + 30;
+  const startY = 120;
   const lineSpacing = 25;
 
   const invoiceDetails = [
