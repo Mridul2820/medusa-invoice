@@ -164,8 +164,6 @@ export default class InvoiceService extends TransactionBaseService {
   ): Promise<DocumentSettings | undefined> {
     const newEntry = this.activeManager_.create(Address);
     newEntry.company = newAddress.company;
-    newEntry.first_name = newAddress.first_name;
-    newEntry.last_name = newAddress.last_name;
     newEntry.city = newAddress.city;
     newEntry.address_1 = newAddress.address_1;
     newEntry.postal_code = newAddress.postal_code;

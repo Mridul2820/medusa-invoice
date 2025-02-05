@@ -7,7 +7,6 @@ import { generateInvoiceTable } from "./parts/table";
 import { generateInvoiceInformation } from "./parts/invoice-info";
 import { generateHeaderForLogo } from "./parts/header-for-logo";
 import { generateHeaderLogo } from "./parts/header-logo";
-import path from "path";
 
 export function validateInput(settings?: DocumentSettings): [boolean, string] {
   if (
