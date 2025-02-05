@@ -12,11 +12,13 @@ export function generateHeaderForLogo(
     { width: 250 }
   );
 
+  const baseY = 170;
+
   doc
     .fillColor("#444444")
     .fontSize(11)
     .font("Helvetica-Bold")
-    .text(documentSettings.store_address.company, 50, 200, {
+    .text(documentSettings.store_address.company, 50, baseY, {
       align: "left",
       width: 250,
     })
@@ -25,12 +27,12 @@ export function generateHeaderForLogo(
     .text(
       `${documentSettings.store_address.address_1}, ${documentSettings.store_address.city} ${documentSettings.store_address.postal_code}`,
       50,
-      225,
+      baseY + 25,
       { align: "left", width: 215 }
     )
-    .text("Email: care@terrapy.in", 50, 265, { align: "left" })
-    .text("Mobile: 9090909090", 50, 280, { align: "left" })
-    .text("GST: ABC123456789ABC", 50, 295, { align: "left" });
+    .text("Email: care@terrapy.in", 50, baseY + 65, { align: "left" })
+    .text("Mobile: 9090909090", 50, baseY + 80, { align: "left" })
+    .text("GST: ABC123456789ABC", 50, baseY + 95, { align: "left" });
   const heightOfAddress = doc.heightOfString(
     documentSettings.store_address.address_1,
     { width: 250 }

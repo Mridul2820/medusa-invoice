@@ -20,7 +20,7 @@ function generateTableRow(doc, y, item, unitCost, quantity, lineTotal) {
 
 export function generateInvoiceTable(doc, y, order: Order, items: LineItem[]) {
   let i;
-  const invoiceTableTop = y + 35;
+  const invoiceTableTop = y + 15;
 
   generateTableRow(doc, invoiceTableTop, "Item", "Quantity", "Rate", "Amount");
   generateHr(doc, invoiceTableTop + 20);
