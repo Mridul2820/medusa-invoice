@@ -9,19 +9,10 @@ function amountToDisplay(amount: number, currencyCode: string): string {
   )} ${currencyCode.toUpperCase()}`;
 }
 
-function generateTableRow(
-  doc,
-  y,
-  item,
-  description,
-  unitCost,
-  quantity,
-  lineTotal
-) {
+function generateTableRow(doc, y, item, unitCost, quantity, lineTotal) {
   doc
     .fontSize(10)
     .text(item, 50, y)
-    .text(description, 150, y)
     .text(unitCost, 280, y, { width: 90, align: "right" })
     .text(quantity, 370, y, { width: 90, align: "right" })
     .text(lineTotal, 0, y, { align: "right" });
@@ -31,15 +22,7 @@ export function generateInvoiceTable(doc, y, order: Order, items: LineItem[]) {
   let i;
   const invoiceTableTop = y + 35;
 
-  generateTableRow(
-    doc,
-    invoiceTableTop,
-    "Item",
-    "Description",
-    "Unit Cost",
-    "Quantity",
-    "Line Total"
-  );
+  generateTableRow(doc, invoiceTableTop, "Item", "Quantity", "Rate", "Amount");
   generateHr(doc, invoiceTableTop + 20);
 
   for (i = 0; i < items.length; i++) {
@@ -49,9 +32,8 @@ export function generateInvoiceTable(doc, y, order: Order, items: LineItem[]) {
       doc,
       position,
       item.title,
-      item.description,
-      amountToDisplay(item.total / item.quantity, order.currency_code),
       item.quantity,
+      amountToDisplay(item.total / item.quantity, order.currency_code),
       amountToDisplay(item.total, order.currency_code)
     );
 
@@ -65,7 +47,6 @@ export function generateInvoiceTable(doc, y, order: Order, items: LineItem[]) {
     "",
     "",
     "Shipping",
-    "",
     amountToDisplay(order.shipping_total, order.currency_code)
   );
 
@@ -75,8 +56,7 @@ export function generateInvoiceTable(doc, y, order: Order, items: LineItem[]) {
     taxPosition,
     "",
     "",
-    "Tax",
-    "",
+    "GST (12%):",
     amountToDisplay(order.tax_total, order.currency_code)
   );
 
@@ -87,7 +67,6 @@ export function generateInvoiceTable(doc, y, order: Order, items: LineItem[]) {
     "",
     "",
     "Total",
-    "",
     amountToDisplay(order.total, order.currency_code)
   );
 }
