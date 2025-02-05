@@ -69,4 +69,6 @@ export function generateInvoiceTable(doc, y, order: Order, items: LineItem[]) {
     "Total",
     amountToDisplay(order.total, order.currency_code)
   );
+
+  return duePosition + 30;
 }

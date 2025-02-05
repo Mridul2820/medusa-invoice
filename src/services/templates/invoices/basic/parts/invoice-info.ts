@@ -1,5 +1,4 @@
 import { Invoice } from "../../../../../models/invoice";
-import { generateHr } from "./hr";
 
 export function generateInvoiceInformation(
   doc,

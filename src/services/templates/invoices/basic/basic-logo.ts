@@ -7,6 +7,7 @@ import { generateInvoiceTable } from "./parts/table";
 import { generateInvoiceInformation } from "./parts/invoice-info";
 import { generateHeaderForLogo } from "./parts/header-for-logo";
 import { generateHeaderLogo } from "./parts/header-logo";
+import { generateTnc } from "./parts/tnc";
 
 export function validateInput(settings?: DocumentSettings): [boolean, string] {
   if (
@@ -39,7 +40,8 @@ export default async (
   await generateHeaderLogo(doc, 50, settings.store_logo_source);
   const endInvoice = generateInvoiceInformation(doc, endHeader, invoice);
   const endDetails = generateCustomerInformation(doc, endInvoice, order);
-  generateInvoiceTable(doc, endDetails, order, order.items);
+  const endTable = generateInvoiceTable(doc, endDetails, order, order.items);
+  generateTnc(doc, endTable);
 
   doc.end();
 
