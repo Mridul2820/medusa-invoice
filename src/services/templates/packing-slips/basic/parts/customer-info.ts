@@ -1,18 +1,5 @@
-/*
- * Copyright 2024 RSC-Labs, https://rsoftcon.com/
- *
- * MIT License
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
 import { Order } from "@medusajs/medusa";
 import { generateHr } from "./hr";
-import { t } from "i18next";
 
 export function generateCustomerInformation(doc, y, order: Order) {
   generateHr(doc, y + 35);
@@ -24,12 +11,7 @@ export function generateCustomerInformation(doc, y, order: Order) {
   if (order.billing_address) {
     doc
       .fontSize(10)
-      .text(
-        `${t("packing-slip-bill-to", "Bill to")}:`,
-        50,
-        customerInformationTop,
-        { align: "left" }
-      )
+      .text("Bill to: ", 50, customerInformationTop, { align: "left" })
       .text(
         `${order.billing_address.first_name} ${order.billing_address.last_name}`,
         50,
@@ -57,12 +39,7 @@ export function generateCustomerInformation(doc, y, order: Order) {
   if (order.shipping_address) {
     doc
       .fontSize(10)
-      .text(
-        `${t("packing-slip-ship-to", "Ship to")}:`,
-        50,
-        customerInformationTop,
-        { align: "right" }
-      )
+      .text("Ship to: ", 50, customerInformationTop, { align: "right" })
       .text(
         `${order.shipping_address.first_name} ${order.shipping_address.last_name}`,
         50,

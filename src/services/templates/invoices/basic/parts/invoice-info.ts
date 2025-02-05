@@ -1,18 +1,5 @@
-/*
- * Copyright 2024 RSC-Labs, https://rsoftcon.com/
- *
- * MIT License
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
 import { Invoice } from "../../../../../models/invoice";
 import { generateHr } from "./hr";
-import { t } from "i18next";
 
 export function generateInvoiceInformation(
   doc,
@@ -22,7 +9,7 @@ export function generateInvoiceInformation(
   doc
     .fillColor("#444444")
     .fontSize(20)
-    .text(t("invoice", "Invoice"), 50, y + 40);
+    .text("Invoice", 50, y + 40);
 
   generateHr(doc, y + 65);
 
@@ -30,17 +17,9 @@ export function generateInvoiceInformation(
 
   doc
     .fontSize(10)
-    .text(
-      `${t("invoice-number", "Invoice number")}:`,
-      50,
-      invoiceInformationTop
-    )
+    .text("Invoice number:", 50, invoiceInformationTop)
     .text(invoice.display_number, 150, invoiceInformationTop)
-    .text(
-      `${t("invoice-date", "Invoice date")}:`,
-      50,
-      invoiceInformationTop + 15
-    )
+    .text("Invoice date:", 50, invoiceInformationTop + 15)
     .text(
       invoice.created_at.toLocaleDateString(),
       150,

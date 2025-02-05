@@ -1,18 +1,5 @@
-/*
- * Copyright 2024 RSC-Labs, https://rsoftcon.com/
- *
- * MIT License
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
 import { LineItem, Order } from "@medusajs/medusa";
 import { generateHr } from "./hr";
-import { t } from "i18next";
 
 function generateTableRow(doc, y, orderNumber, orderDate, shippingMethod) {
   doc
@@ -34,9 +21,9 @@ export function generateOrderInfoTable(
   generateTableRow(
     doc,
     invoiceTableTop,
-    t("packing-slip-table-header-order-number", "Order #"),
-    t("packing-slip-table-header-order-date", "Order date"),
-    t("packing-slip-table-header-shipping-method", "Shipping method")
+    "Order #",
+    "Order date",
+    "Shipping method"
   );
   generateHr(doc, invoiceTableTop + 20);
 

@@ -1,6 +1,6 @@
 {
   "name": "medusa-invoice",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "description": "Generate invoice from Medusa",
   "main": "dist/index.js",
   "author": "Mridul",
@@ -42,7 +42,6 @@
     "pdfkit": "0.15.0",
     "moment": "^2.30.1",
     "ajv": "^8.17.1",
-    "i18next": "23.15.1",
     "lodash": "4.17.21"
   },
   "devDependencies": {

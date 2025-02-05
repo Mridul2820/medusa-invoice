@@ -1,73 +1,90 @@
-/*
- * Copyright 2024 RSC-Labs, https://rsoftcon.com/
- *
- * MIT License
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
-import { Heading, Text, FocusModal, Button, Input, Label, Alert } from "@medusajs/ui"
+import {
+  Heading,
+  Text,
+  FocusModal,
+  Button,
+  Input,
+  Label,
+  Alert,
+} from "@medusajs/ui";
 import { CircularProgress, Grid } from "@mui/material";
-import { useAdminCustomPost, useAdminCustomQuery } from "medusa-react"
+import { useAdminCustomPost, useAdminCustomQuery } from "medusa-react";
 import { useForm } from "react-hook-form";
-import { toast  } from "@medusajs/ui"
+import { toast } from "@medusajs/ui";
 import { useState } from "react";
-import { AdminStoreDocumentInvoiceSettingsPostReq, AdminStoreDocumentInvoiceSettingsQueryReq, DocumentInvoiceSettings, StoreDocumentInvoiceSettingsResult, StoreDocumentSettingsResult } from "../types/api";
+import {
+  AdminStoreDocumentInvoiceSettingsPostReq,
+  AdminStoreDocumentInvoiceSettingsQueryReq,
+  DocumentInvoiceSettings,
+  StoreDocumentInvoiceSettingsResult,
+  StoreDocumentSettingsResult,
+} from "../types/api";
 import InvoiceSettingsDisplayNumber from "./settings-invoice-display-number";
 import { isBoolean } from "lodash";
 
 type InvoiceSettings = {
-  formatNumber: string,
-  forcedNumber?: number
-}
+  formatNumber: string;
+  forcedNumber?: number;
+};
 
-const InvoiceSettingsForm = ({ invoiceSettings, setOpenModal } : {invoiceSettings?: DocumentInvoiceSettings, setOpenModal: any}) => {
-
-  const { register, handleSubmit, formState: { errors } } = useForm<InvoiceSettings>()
-  const [formatNumber, setFormatNumber] = useState(invoiceSettings?.invoice_number_format);
-  const [forcedNumber, setForcedNumber] = useState(invoiceSettings?.invoice_forced_number);
-  const [ error, setError ] = useState(undefined);
+const InvoiceSettingsForm = ({
+  invoiceSettings,
+  setOpenModal,
+}: {
+  invoiceSettings?: DocumentInvoiceSettings;
+  setOpenModal: any;
+}) => {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<InvoiceSettings>();
+  const [formatNumber, setFormatNumber] = useState(
+    invoiceSettings?.invoice_number_format
+  );
+  const [forcedNumber, setForcedNumber] = useState(
+    invoiceSettings?.invoice_forced_number
+  );
+  const [error, setError] = useState(undefined);
 
   const { mutate } = useAdminCustomPost<
     AdminStoreDocumentInvoiceSettingsPostReq,
-    StoreDocumentInvoiceSettingsResult  
-  >
-  (
-    `/document-invoice-settings`,
-    ['document-invoice-settings']
-  )
+    StoreDocumentInvoiceSettingsResult
+  >(`/document-invoice-settings`, ["document-invoice-settings"]);
   const onSubmit = (data: InvoiceSettings) => {
     return mutate(
       {
         formatNumber: data.formatNumber,
-        forcedNumber: data.forcedNumber !== undefined && data.forcedNumber.toString().length ? data.forcedNumber : undefined
-      }, {
-        onSuccess: async ( { response,  settings } ) => {
+        forcedNumber:
+          data.forcedNumber !== undefined && data.forcedNumber.toString().length
+            ? data.forcedNumber
+            : undefined,
+      },
+      {
+        onSuccess: async ({ response, settings }) => {
           if (response.status == 201 && settings) {
-            toast.success('Invoice settings', {
+            toast.success("Invoice settings", {
               description: "New invoice settings saved",
             });
             setOpenModal(false);
           } else {
-            toast.error('Invoice settings', {
-              description: "New invoice settings cannot be saved, some error happened.",
+            toast.error("Invoice settings", {
+              description:
+                "New invoice settings cannot be saved, some error happened.",
             });
           }
         },
-        onError: ( { } ) => {
-          toast.error('Invoice settings', {
-            description: "New invoice settings cannot be saved, some error happened.",
+        onError: ({}) => {
+          toast.error("Invoice settings", {
+            description:
+              "New invoice settings cannot be saved, some error happened.",
           });
         },
       }
-    )  
-  }
-  const INVOICE_NUMBER_PLACEHOLDER = '{invoice_number}';
-  const errorText = `Text ${INVOICE_NUMBER_PLACEHOLDER} needs to be included in input.`
+    );
+  };
+  const INVOICE_NUMBER_PLACEHOLDER = "{invoice_number}";
+  const errorText = `Text ${INVOICE_NUMBER_PLACEHOLDER} needs to be included in input.`;
   const LABEL_MUST_FORMAT = `Format must include ${INVOICE_NUMBER_PLACEHOLDER}`;
   const LABEL_MUST_FORCED = `Forced number must be a number`;
   const LABEL_INFO_FORCED = `It will auto-increment starting from this number.`;
@@ -87,131 +104,149 @@ const InvoiceSettingsForm = ({ invoiceSettings, setOpenModal } : {invoiceSetting
 
   return (
     <form>
-      <Grid container direction={'column'} rowSpacing={4} paddingTop={8}>
-        <Grid container direction={'column'} spacing={1} marginTop={2}>
+      <Grid container direction={"column"} rowSpacing={4} paddingTop={8}>
+        <Grid container direction={"column"} spacing={1} marginTop={2}>
           <Grid item>
-            <Grid container direction={'column'}>
+            <Grid container direction={"column"}>
               <Grid item>
-                <Label size="small">
-                  Number format
-                </Label>
+                <Label size="small">Number format</Label>
               </Grid>
               <Grid item>
-                <Label size='xsmall'>
-                  {LABEL_MUST_FORMAT}
-                </Label>
+                <Label size="xsmall">{LABEL_MUST_FORMAT}</Label>
               </Grid>
             </Grid>
           </Grid>
           <Grid item>
-            <Input 
+            <Input
               placeholder={INVOICE_NUMBER_PLACEHOLDER}
-              defaultValue={invoiceSettings?.invoice_number_format ? invoiceSettings.invoice_number_format : INVOICE_NUMBER_PLACEHOLDER}
-              {...register('formatNumber', {
+              defaultValue={
+                invoiceSettings?.invoice_number_format
+                  ? invoiceSettings.invoice_number_format
+                  : INVOICE_NUMBER_PLACEHOLDER
+              }
+              {...register("formatNumber", {
                 validate: validateFormatNumber,
                 onChange(e) {
-                  const value = e.target.value
+                  const value = e.target.value;
                   if (isBoolean(validateFormatNumber(value))) {
                     setError(undefined);
                     setFormatNumber(value);
                   } else {
-                    setError(validateFormatNumber(value))
+                    setError(validateFormatNumber(value));
                   }
                 },
               })}
             />
           </Grid>
         </Grid>
-        <Grid container direction={'column'} spacing={1} marginTop={2}>
+        <Grid container direction={"column"} spacing={1} marginTop={2}>
           <Grid item>
-            <Grid container direction={'column'}>
+            <Grid container direction={"column"}>
               <Grid item>
-                <Label size="small">
-                  Forced number
-                </Label>
+                <Label size="small">Forced number</Label>
               </Grid>
               <Grid item>
-                <Label size='xsmall'>
-                  {LABEL_INFO_FORCED}
-                </Label>
+                <Label size="xsmall">{LABEL_INFO_FORCED}</Label>
               </Grid>
             </Grid>
           </Grid>
           <Grid item>
-            <Input 
-              defaultValue={invoiceSettings?.invoice_forced_number !== undefined &&  invoiceSettings.invoice_forced_number !== null 
-                ? invoiceSettings.invoice_forced_number : ''}
+            <Input
+              defaultValue={
+                invoiceSettings?.invoice_forced_number !== undefined &&
+                invoiceSettings.invoice_forced_number !== null
+                  ? invoiceSettings.invoice_forced_number
+                  : ""
+              }
               type="number"
-              {...register('forcedNumber', {
+              {...register("forcedNumber", {
                 validate: validateForcedNumber,
                 onChange(e) {
-                  const value = e.target.value
+                  const value = e.target.value;
                   if (isBoolean(validateForcedNumber(value))) {
                     setError(undefined);
                     setForcedNumber(value);
                   } else {
-                    setError(validateForcedNumber(value))
+                    setError(validateForcedNumber(value));
                   }
                 },
               })}
             />
           </Grid>
         </Grid>
-        <Grid container direction={'column'} spacing={1} marginTop={2}>
+        <Grid container direction={"column"} spacing={1} marginTop={2}>
           <Grid item>
-            <Label size="small">
-              Your next invoice number will be:
-            </Label>
+            <Label size="small">Your next invoice number will be:</Label>
           </Grid>
-          {errors.formatNumber == undefined && errors.forcedNumber == undefined && error == undefined && <Grid item>
-            <InvoiceSettingsDisplayNumber formatNumber={formatNumber} forcedNumber={forcedNumber !== undefined && forcedNumber !== null ? parseInt(forcedNumber) : undefined}/>
-          </Grid>}
+          {errors.formatNumber == undefined &&
+            errors.forcedNumber == undefined &&
+            error == undefined && (
+              <Grid item>
+                <InvoiceSettingsDisplayNumber
+                  formatNumber={formatNumber}
+                  forcedNumber={
+                    forcedNumber !== undefined && forcedNumber !== null
+                      ? parseInt(forcedNumber)
+                      : undefined
+                  }
+                />
+              </Grid>
+            )}
         </Grid>
         <Grid item>
           <Button
             type="submit"
-            variant={'primary'}
+            variant={"primary"}
             onClick={handleSubmit(onSubmit)}
           >
             Save
           </Button>
         </Grid>
-        {(errors.formatNumber || errors.forcedNumber) && <Grid item>
-          <Alert variant="error">{errorText}</Alert>
-        </Grid>}
-          {error && <Grid item>
+        {(errors.formatNumber || errors.forcedNumber) && (
+          <Grid item>
+            <Alert variant="error">{errorText}</Alert>
+          </Grid>
+        )}
+        {error && (
+          <Grid item>
             <Alert variant="error">{error}</Alert>
-          </Grid>}
+          </Grid>
+        )}
       </Grid>
     </form>
-  )
-}
+  );
+};
 
 const InvoiceSettingsModalDetails = ({ setOpenModal }) => {
-
-  const { data, isLoading } = useAdminCustomQuery
-  <AdminStoreDocumentInvoiceSettingsQueryReq, StoreDocumentInvoiceSettingsResult>(
+  const { data, isLoading } = useAdminCustomQuery<
+    AdminStoreDocumentInvoiceSettingsQueryReq,
+    StoreDocumentInvoiceSettingsResult
+  >(
     "/document-invoice-settings",
     [],
-    {
-    },
+    {},
     {
       refetchOnMount: "always",
-      cacheTime: 0
+      cacheTime: 0,
     }
-  )
+  );
 
   if (isLoading) {
     return (
       <FocusModal.Body>
-        <CircularProgress/>
+        <CircularProgress />
       </FocusModal.Body>
-    )
+    );
   }
 
   return (
     <FocusModal.Body>
-      <Grid container direction={'column'} alignContent={'center'} paddingTop={8}>
+      <Grid
+        container
+        direction={"column"}
+        alignContent={"center"}
+        paddingTop={8}
+      >
         <Grid item>
           <Heading>Invoice settings</Heading>
         </Grid>
@@ -221,31 +256,30 @@ const InvoiceSettingsModalDetails = ({ setOpenModal }) => {
           </Text>
         </Grid>
         <Grid item>
-          <InvoiceSettingsForm invoiceSettings={data?.settings} setOpenModal={setOpenModal}/>
+          <InvoiceSettingsForm
+            invoiceSettings={data?.settings}
+            setOpenModal={setOpenModal}
+          />
         </Grid>
       </Grid>
     </FocusModal.Body>
-  )
-}
+  );
+};
 
 const InvoiceSettingsModal = () => {
-  const [open, setOpen] = useState(false)
+  const [open, setOpen] = useState(false);
 
   return (
-    <FocusModal
-      open={open}
-      onOpenChange={setOpen}
-    >
+    <FocusModal open={open} onOpenChange={setOpen}>
       <FocusModal.Trigger asChild>
         <Button>Change settings</Button>
       </FocusModal.Trigger>
       <FocusModal.Content>
-        <FocusModal.Header/>
-        <InvoiceSettingsModalDetails setOpenModal={setOpen}/>
+        <FocusModal.Header />
+        <InvoiceSettingsModalDetails setOpenModal={setOpen} />
       </FocusModal.Content>
     </FocusModal>
-  )
-}
+  );
+};
 
-
-export default InvoiceSettingsModal
+export default InvoiceSettingsModal;

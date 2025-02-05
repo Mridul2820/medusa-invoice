@@ -1,19 +1,6 @@
-/*
- * Copyright 2024 RSC-Labs, https://rsoftcon.com/
- *
- * MIT License
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
 import { LineItem, Order } from "@medusajs/medusa";
 import { generateHr } from "./hr";
 import { getDecimalDigits } from "../../../../utils/currency";
-import { t } from "i18next";
 
 function amountToDisplay(amount: number, currencyCode: string): string {
   const decimalDigits = getDecimalDigits(currencyCode);
@@ -47,11 +34,11 @@ export function generateInvoiceTable(doc, y, order: Order, items: LineItem[]) {
   generateTableRow(
     doc,
     invoiceTableTop,
-    t("invoice-table-header-item", "Item"),
-    t("invoice-table-header-description", "Description"),
-    t("invoice-table-header-unit-cost", "Unit Cost"),
-    t("invoice-table-header-quantity", "Quantity"),
-    t("invoice-table-header-line-total", "Line Total")
+    "Item",
+    "Description",
+    "Unit Cost",
+    "Quantity",
+    "Line Total"
   );
   generateHr(doc, invoiceTableTop + 20);
 
@@ -77,7 +64,7 @@ export function generateInvoiceTable(doc, y, order: Order, items: LineItem[]) {
     subtotalPosition,
     "",
     "",
-    t("invoice-table-shipping", "Shipping"),
+    "Shipping",
     "",
     amountToDisplay(order.shipping_total, order.currency_code)
   );
@@ -88,7 +75,7 @@ export function generateInvoiceTable(doc, y, order: Order, items: LineItem[]) {
     taxPosition,
     "",
     "",
-    t("invoice-table-tax", "Tax"),
+    "Tax",
     "",
     amountToDisplay(order.tax_total, order.currency_code)
   );
@@ -99,7 +86,7 @@ export function generateInvoiceTable(doc, y, order: Order, items: LineItem[]) {
     duePosition,
     "",
     "",
-    t("invoice-table-total", "Total"),
+    "Total",
     "",
     amountToDisplay(order.total, order.currency_code)
   );
