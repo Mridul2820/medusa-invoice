@@ -12,7 +12,7 @@ export function generateHeaderForLogo(
     { width: 250 }
   );
 
-  const baseY = 170;
+  const baseY = 155;
 
   doc
     .fillColor("#444444")

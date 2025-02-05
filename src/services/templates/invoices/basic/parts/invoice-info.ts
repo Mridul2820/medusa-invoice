@@ -61,7 +61,7 @@ export function generateInvoiceInformation(
       .font(labelStyle.font)
       .fontSize(labelStyle.fontSize)
       .fillColor(labelStyle.color)
-      .text(detail.label, startX - 100, currentY, { align: "right" });
+      .text(detail.label, startX + 100, currentY, { align: "right" });
 
     doc
       .font(valueStyle.font)
