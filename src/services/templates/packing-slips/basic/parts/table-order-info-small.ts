@@ -30,7 +30,6 @@ export function generateOrderInfoTable(
 ): number {
   const invoiceTableTop = y + 25;
 
-  doc.font("Bold");
   generateTableRow(
     doc,
     invoiceTableTop,

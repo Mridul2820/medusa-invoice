@@ -44,7 +44,6 @@ export function generateInvoiceTable(doc, y, order: Order, items: LineItem[]) {
   let i;
   const invoiceTableTop = y + 35;
 
-  doc.font("Bold");
   generateTableRow(
     doc,
     invoiceTableTop,
@@ -95,7 +94,6 @@ export function generateInvoiceTable(doc, y, order: Order, items: LineItem[]) {
   );
 
   const duePosition = taxPosition + 45;
-  doc.font("Bold");
   generateTableRow(
     doc,
     duePosition,

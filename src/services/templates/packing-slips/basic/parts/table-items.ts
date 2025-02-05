@@ -28,7 +28,6 @@ export function generateItemsTable(doc, y, order: Order, items: LineItem[]) {
 
   let totalQuantity = 0;
 
-  doc.font("Bold");
   generateTableRow(
     doc,
     invoiceTableTop,
@@ -54,7 +53,6 @@ export function generateItemsTable(doc, y, order: Order, items: LineItem[]) {
   }
 
   const totalQuantityPosition = invoiceTableTop + (i + 1) * 30;
-  doc.font("Bold");
   generateTableRow(
     doc,
     totalQuantityPosition,

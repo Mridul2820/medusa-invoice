@@ -31,7 +31,6 @@ export function generateOrderInfoTable(
   let i;
   const invoiceTableTop = y + 35;
 
-  doc.font("Bold");
   generateTableRow(
     doc,
     invoiceTableTop,
