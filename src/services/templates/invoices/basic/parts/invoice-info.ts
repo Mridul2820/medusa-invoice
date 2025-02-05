@@ -7,7 +7,15 @@ export function generateInvoiceInformation(
   y: number,
   invoice: Invoice
 ): number {
-  const startX = 300;
+  doc.fillColor("#444444").fontSize(28).text("Invoice", 40, 50, {
+    align: "right",
+  });
+
+  doc.fontSize(14).text(invoice.display_number, 40, 86, {
+    align: "right",
+  });
+
+  const startX = 180;
   const startY = y + 30;
   const lineSpacing = 25;
 
@@ -53,7 +61,7 @@ export function generateInvoiceInformation(
       .font(labelStyle.font)
       .fontSize(labelStyle.fontSize)
       .fillColor(labelStyle.color)
-      .text(detail.label, startX, currentY, { align: "right" });
+      .text(detail.label, startX - 100, currentY, { align: "right" });
 
     doc
       .font(valueStyle.font)
@@ -62,17 +70,17 @@ export function generateInvoiceInformation(
       .text(detail.value, startX + 150, currentY, { align: "right" });
 
     if (detail.label === "Balance Due:") {
-      doc.rect(startX - 10, currentY - 5, 300, 25).fill("#f5f5f5");
+      doc.rect(startX - 10, currentY - 5, 280, 25).fill("#f5f5f5");
 
       doc
         .font(labelStyle.font)
         .fontSize(labelStyle.fontSize)
         .fillColor("#000000")
-        .text(detail.label, startX, currentY + 2, { align: "right" })
+        .text(detail.label, startX + 150, currentY + 3, { align: "right" })
         .font(valueStyle.font)
         .fontSize(valueStyle.fontSize)
         .fillColor("#000000")
-        .text(detail.value, startX + 150, currentY + 2, { align: "right" });
+        .text(detail.value, startX + 150, currentY + 3, { align: "right" });
     }
 
     currentY += lineSpacing;
