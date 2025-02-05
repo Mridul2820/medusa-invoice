@@ -14,7 +14,11 @@ import { Invoice } from "../../../../../models/invoice";
 import { generateHr } from "./hr";
 import { t } from "i18next";
 
-export function generateInvoiceInformation(doc, y: number, invoice: Invoice) : number {
+export function generateInvoiceInformation(
+  doc,
+  y: number,
+  invoice: Invoice
+): number {
   doc
     .fillColor("#444444")
     .fontSize(20)
@@ -26,12 +30,23 @@ export function generateInvoiceInformation(doc, y: number, invoice: Invoice) : n
 
   doc
     .fontSize(10)
-    .text(`${t("invoice-number", "Invoice number")}:`, 50, invoiceInformationTop)
-    .font("Bold")
+    .text(
+      `${t("invoice-number", "Invoice number")}:`,
+      50,
+      invoiceInformationTop
+    )
     .text(invoice.display_number, 150, invoiceInformationTop)
     .font("Regular")
-    .text(`${t("invoice-date", "Invoice date")}:`, 50, invoiceInformationTop + 15)
-    .text(invoice.created_at.toLocaleDateString(), 150, invoiceInformationTop + 15)
+    .text(
+      `${t("invoice-date", "Invoice date")}:`,
+      50,
+      invoiceInformationTop + 15
+    )
+    .text(
+      invoice.created_at.toLocaleDateString(),
+      150,
+      invoiceInformationTop + 15
+    )
     .moveDown();
 
   return invoiceInformationTop + 15;

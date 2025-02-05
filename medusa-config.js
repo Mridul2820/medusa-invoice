@@ -45,10 +45,6 @@ const plugins = [
       outDir: "build",
     },
   },
-  {
-    resolve: "@rsc-labs/medusa-documents",
-    options: {},
-  },
 ];
 
 const modules = {};
