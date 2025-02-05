@@ -14,13 +14,7 @@ import { LineItem, Order } from "@medusajs/medusa";
 import { generateHrInA7 } from "./hr";
 import { t } from "i18next";
 
-function generateTableRow(
-  doc,
-  y,
-  item,
-  description,
-  quantity,
-) {
+function generateTableRow(doc, y, item, description, quantity) {
   doc
     .fontSize(6)
     .text(item, 25, y)
@@ -40,11 +34,10 @@ export function generateItemsTable(doc, y, order: Order, items: LineItem[]) {
     invoiceTableTop,
     t("packing-slip-table-header-item", "Item"),
     t("packing-slip-table-header-description", "Description"),
-    t("packing-slip-table-header-quantity", "Quantity"),
+    t("packing-slip-table-header-quantity", "Quantity")
   );
   generateHrInA7(doc, invoiceTableTop + 10);
-  doc.font("Regular");
-  
+
   for (i = 0; i < items.length; i++) {
     const item = items[i];
     totalQuantity += item.quantity;
@@ -54,7 +47,7 @@ export function generateItemsTable(doc, y, order: Order, items: LineItem[]) {
       position,
       item.title,
       item.description,
-      item.quantity,
+      item.quantity
     );
 
     generateHrInA7(doc, position + 10);
@@ -69,5 +62,4 @@ export function generateItemsTable(doc, y, order: Order, items: LineItem[]) {
     t("packing-slip-table-header-total", "Total"),
     totalQuantity
   );
-  doc.font("Regular");
 }

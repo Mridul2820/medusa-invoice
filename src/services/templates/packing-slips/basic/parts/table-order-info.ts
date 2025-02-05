@@ -14,13 +14,7 @@ import { LineItem, Order } from "@medusajs/medusa";
 import { generateHr } from "./hr";
 import { t } from "i18next";
 
-function generateTableRow(
-  doc,
-  y,
-  orderNumber,
-  orderDate,
-  shippingMethod,
-) {
+function generateTableRow(doc, y, orderNumber, orderDate, shippingMethod) {
   doc
     .fontSize(10)
     .text(orderNumber, 50, y)
@@ -28,7 +22,12 @@ function generateTableRow(
     .text(shippingMethod, 0, y, { align: "right" });
 }
 
-export function generateOrderInfoTable(doc, y, order: Order, items: LineItem[]) : number {
+export function generateOrderInfoTable(
+  doc,
+  y,
+  order: Order,
+  items: LineItem[]
+): number {
   let i;
   const invoiceTableTop = y + 35;
 
@@ -38,10 +37,9 @@ export function generateOrderInfoTable(doc, y, order: Order, items: LineItem[]) 
     invoiceTableTop,
     t("packing-slip-table-header-order-number", "Order #"),
     t("packing-slip-table-header-order-date", "Order date"),
-    t("packing-slip-table-header-shipping-method", "Shipping method"),
+    t("packing-slip-table-header-shipping-method", "Shipping method")
   );
   generateHr(doc, invoiceTableTop + 20);
-  doc.font("Regular");
 
   const position = invoiceTableTop + 30;
 

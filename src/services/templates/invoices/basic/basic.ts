@@ -42,7 +42,6 @@ export default async (
   order: Order
 ): Promise<Buffer> => {
   var doc = new PDFDocument();
-  doc.font("Regular");
 
   const buffers = [];
   doc.on("data", buffers.push.bind(buffers));

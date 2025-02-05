@@ -15,9 +15,11 @@ import { generateHr } from "./hr";
 import { getDecimalDigits } from "../../../../utils/currency";
 import { t } from "i18next";
 
-function amountToDisplay(amount: number, currencyCode: string) : string {
+function amountToDisplay(amount: number, currencyCode: string): string {
   const decimalDigits = getDecimalDigits(currencyCode);
-  return `${(amount / Math.pow(10, decimalDigits)).toFixed(decimalDigits)} ${currencyCode.toUpperCase()}`;
+  return `${(amount / Math.pow(10, decimalDigits)).toFixed(
+    decimalDigits
+  )} ${currencyCode.toUpperCase()}`;
 }
 
 function generateTableRow(
@@ -53,8 +55,7 @@ export function generateInvoiceTable(doc, y, order: Order, items: LineItem[]) {
     t("invoice-table-header-line-total", "Line Total")
   );
   generateHr(doc, invoiceTableTop + 20);
-  doc.font("Regular");
-  
+
   for (i = 0; i < items.length; i++) {
     const item = items[i];
     const position = invoiceTableTop + (i + 1) * 30;
@@ -104,5 +105,4 @@ export function generateInvoiceTable(doc, y, order: Order, items: LineItem[]) {
     "",
     amountToDisplay(order.total, order.currency_code)
   );
-  doc.font("Regular");
 }
