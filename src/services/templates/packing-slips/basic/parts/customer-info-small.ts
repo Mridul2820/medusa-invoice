@@ -30,7 +30,6 @@ export function generateCustomerInformation(doc, y, order: Order) {
         customerInformationTop,
         { align: "left" }
       )
-      .font("Regular")
       .text(
         `${order.billing_address.first_name} ${order.billing_address.last_name}`,
         25,
@@ -57,14 +56,12 @@ export function generateCustomerInformation(doc, y, order: Order) {
     const RIGHT_WIDTH = 100;
     doc.fontSize(6);
 
-    doc
-      .text(
-        `${t("packing-slip-ship-to", "Ship to")}:`,
-        RIGHT_MARGIN,
-        customerInformationTop,
-        { align: "right", width: RIGHT_WIDTH }
-      )
-      .font("Regular");
+    doc.text(
+      `${t("packing-slip-ship-to", "Ship to")}:`,
+      RIGHT_MARGIN,
+      customerInformationTop,
+      { align: "right", width: RIGHT_WIDTH }
+    );
 
     doc
       .text(

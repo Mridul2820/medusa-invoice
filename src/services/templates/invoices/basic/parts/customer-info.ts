@@ -32,7 +32,6 @@ export function generateCustomerInformation(doc, y, order: Order) {
       .text(`${t("invoice-bill-to", "Bill to")}:`, 50, customerInformationTop, {
         align: "left",
       })
-      .font("Regular")
       .text(
         `${order.billing_address.first_name} ${order.billing_address.last_name}`,
         50,
@@ -63,7 +62,6 @@ export function generateCustomerInformation(doc, y, order: Order) {
       .text(`${t("invoice-ship-to", "Ship to")}:`, 50, customerInformationTop, {
         align: "right",
       })
-      .font("Regular")
       .text(
         `${order.shipping_address.first_name} ${order.shipping_address.last_name}`,
         50,

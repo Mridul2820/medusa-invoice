@@ -36,7 +36,6 @@ export function generateInvoiceInformation(
       invoiceInformationTop
     )
     .text(invoice.display_number, 150, invoiceInformationTop)
-    .font("Regular")
     .text(
       `${t("invoice-date", "Invoice date")}:`,
       50,

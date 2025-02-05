@@ -30,7 +30,6 @@ export function generateCustomerInformation(doc, y, order: Order) {
         customerInformationTop,
         { align: "left" }
       )
-      .font("Regular")
       .text(
         `${order.billing_address.first_name} ${order.billing_address.last_name}`,
         50,
@@ -64,7 +63,6 @@ export function generateCustomerInformation(doc, y, order: Order) {
         customerInformationTop,
         { align: "right" }
       )
-      .font("Regular")
       .text(
         `${order.shipping_address.first_name} ${order.shipping_address.last_name}`,
         50,
