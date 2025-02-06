@@ -13,7 +13,7 @@ export const amountToDisplay = (
 function generateTableRow(doc, y, item, quantity, unitCost, lineTotal, bg) {
   if (bg) {
     doc
-      .roundedRect(50, y - 6, 500, 20, 3)
+      .roundedRect(50, y - 4, 500, 20, 3)
       .fillColor("#000000")
       .fill();
     doc.fillColor("#FFFFFF");
