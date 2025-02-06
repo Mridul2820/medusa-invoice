@@ -18,7 +18,7 @@ export function generateHeaderForLogo(
     .fillColor("#444444")
     .fontSize(11)
     .font("Helvetica-Bold")
-    .text(documentSettings.store_address.company, 50, baseY, {
+    .text(documentSettings.store_address.company, 50, baseY + 5, {
       align: "left",
       width: 250,
     })

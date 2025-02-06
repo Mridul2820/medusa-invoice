@@ -7,9 +7,13 @@ export function generateInvoiceInformation(
   y: number,
   invoice: Invoice
 ): number {
-  doc.fillColor("#444444").fontSize(28).text("Invoice", 40, 50, {
-    align: "right",
-  });
+  doc
+    .fillColor("#444444")
+    .fontSize(32)
+    .font("Helvetica-SemiBold")
+    .text("INVOICE", 40, 50, {
+      align: "right",
+    });
 
   doc.fontSize(14).text(invoice.display_number, 40, 86, {
     align: "right",
@@ -61,26 +65,26 @@ export function generateInvoiceInformation(
       .font(labelStyle.font)
       .fontSize(labelStyle.fontSize)
       .fillColor(labelStyle.color)
-      .text(detail.label, startX + 100, currentY, { align: "right" });
+      .text(detail.label, startX + 170, currentY, { align: "left" });
 
     doc
       .font(valueStyle.font)
       .fontSize(valueStyle.fontSize)
       .fillColor(valueStyle.color)
-      .text(detail.value, startX + 150, currentY, { align: "right" });
+      .text(detail.value, startX + 10, currentY, { align: "right" });
 
     if (detail.label === "Balance Due:") {
-      doc.rect(startX - 10, currentY - 5, 280, 25).fill("#f5f5f5");
+      doc.rect(startX + 150, currentY - 5, 220, 25).fill("#f5f5f5");
 
       doc
         .font(labelStyle.font)
         .fontSize(labelStyle.fontSize)
         .fillColor("#000000")
-        .text(detail.label, startX + 150, currentY + 3, { align: "right" })
+        .text(detail.label, startX + 170, currentY + 3, { align: "left" })
         .font(valueStyle.font)
         .fontSize(valueStyle.fontSize)
         .fillColor("#000000")
-        .text(detail.value, startX + 150, currentY + 3, { align: "right" });
+        .text(detail.value, startX + 10, currentY + 3, { align: "right" });
     }
 
     currentY += lineSpacing;
