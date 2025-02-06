@@ -1,5 +1,6 @@
 import { LineItem, Order } from "@medusajs/medusa";
 import { OrderStatus } from "@medusajs/utils";
+import path from "path";
 import { getDecimalDigits } from "../../../../utils/currency";
 
 function amountToDisplay(amount: number, currencyCode: string): string {
@@ -20,15 +21,25 @@ function generateTableRow(doc, y, item, quantity, unitCost, lineTotal, bg) {
 
   doc
     .fontSize(10)
-    .font("Helvetica-Bold")
+    .font("Bold")
     .text(item, 58, y)
-    .font("Helvetica")
+    .font("Regular")
     .text(quantity, 250, y, { width: 90, align: "left" })
     .text(unitCost, 350, y, { width: 90, align: "right" })
     .text(lineTotal, 0, y, { align: "right" });
 }
 
 export function generateInvoiceTable(doc, y, order: Order, items: LineItem[]) {
+  doc.registerFont(
+    "Regular",
+    path.resolve(__dirname, "../../../../../fonts/NotoSans-Regular.ttf")
+  );
+  doc.registerFont(
+    "Bold",
+    path.resolve(__dirname, "../../../../../fonts/NotoSans-Bold.ttf")
+  );
+  doc.font("Regular");
+
   let i;
   const invoiceTableTop = y + 15;
 

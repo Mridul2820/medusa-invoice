@@ -1,6 +1,6 @@
 {
   "name": "medusa-invoice",
-  "version": "0.0.40",
+  "version": "0.0.43",
   "description": "Generate invoice from Medusa",
   "main": "dist/index.js",
   "author": "Mridul",
@@ -19,12 +19,12 @@
   ],
   "scripts": {
     "clean": "cross-env ./node_modules/.bin/rimraf dist",
-    "copy-assets": "cp -rv src/assets dist/assets",
+    "copy-assets": "cp -rv src/fonts dist/fonts",
     "dev": "cross-env npm run build && medusa develop",
     "build": "cross-env npm run clean && npm run build:server && npm run build:admin",
     "build:server": "cross-env npm run clean && tsc -p tsconfig.server.json",
     "build:admin": "cross-env medusa-admin build",
-    "prepare": "cross-env NODE_ENV=production npm run build:server && medusa-admin bundle"
+    "prepare": "cross-env NODE_ENV=production npm run build:server && medusa-admin bundle && npm run copy-assets"
   },
   "dependencies": {
     "@emotion/react": "^11.11.3",
