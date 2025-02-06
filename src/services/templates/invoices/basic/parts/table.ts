@@ -1,6 +1,6 @@
 import { LineItem, Order } from "@medusajs/medusa";
-import { getDecimalDigits } from "../../../../utils/currency";
 import { OrderStatus } from "@medusajs/utils";
+import { getDecimalDigits } from "../../../../utils/currency";
 
 function amountToDisplay(amount: number, currencyCode: string): string {
   const decimalDigits = getDecimalDigits(currencyCode);
@@ -21,10 +21,10 @@ function generateTableRow(doc, y, item, quantity, unitCost, lineTotal, bg) {
   doc
     .fontSize(10)
     .font("Helvetica-Bold")
-    .text(item, 55, y)
+    .text(item, 58, y)
     .font("Helvetica")
-    .text(quantity, 200, y, { width: 90, align: "left" })
-    .text(unitCost, 300, y, { width: 90, align: "right" })
+    .text(quantity, 250, y, { width: 90, align: "left" })
+    .text(unitCost, 350, y, { width: 90, align: "right" })
     .text(lineTotal, 0, y, { align: "right" });
 }
 
