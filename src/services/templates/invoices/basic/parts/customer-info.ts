@@ -1,7 +1,7 @@
 import { Order } from "@medusajs/medusa";
 
 export function generateCustomerInformation(doc, y, order: Order) {
-  const customerInformationTop = y + 30;
+  const customerInformationTop = y + 10;
 
   let heightOfBillToAddress: number | undefined;
 
@@ -11,12 +11,14 @@ export function generateCustomerInformation(doc, y, order: Order) {
       .text("Bill to:", 50, customerInformationTop, {
         align: "left",
       })
+      .font("Helvetica-Bold")
       .text(
         `${order.billing_address.first_name} ${order.billing_address.last_name}`,
         50,
         customerInformationTop + 15,
         { align: "left" }
       )
+      .font("Helvetica")
       .text(
         `${order.billing_address.city} ${order.billing_address.postal_code}`,
         50,
@@ -41,12 +43,14 @@ export function generateCustomerInformation(doc, y, order: Order) {
       .text("Ship to:", 230, customerInformationTop, {
         align: "left",
       })
+      .font("Helvetica-Bold")
       .text(
         `${order.shipping_address.first_name} ${order.shipping_address.last_name}`,
         230,
         customerInformationTop + 15,
         { align: "left" }
       )
+      .font("Helvetica")
       .text(
         `${order.shipping_address.city} ${order.shipping_address.postal_code}`,
         230,

@@ -56,7 +56,7 @@ export function generateInvoiceTable(doc, y, order: Order, items: LineItem[]) {
     );
   }
 
-  const subtotalPosition = invoiceTableTop + (i + 1) * 30 + 20;
+  const subtotalPosition = invoiceTableTop + (i + 1) * 30 + 10;
   generateTableRow(
     doc,
     subtotalPosition,
