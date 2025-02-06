@@ -27,7 +27,7 @@ function generateTableRow(doc, y, item, quantity, unitCost, lineTotal, bg) {
     .text(item, 58, y)
     .font("Regular")
     .text(quantity, 250, y, { width: 90, align: "left" })
-    .text(unitCost, 350, y, { width: 90, align: "right" })
+    .text(unitCost, 340, y, { width: 130, align: "right" })
     .text(lineTotal, 0, y, { align: "right" });
 }
 
@@ -69,7 +69,7 @@ export function generateInvoiceTable(doc, y, order: Order, items: LineItem[]) {
     );
   }
 
-  const subtotalPosition = invoiceTableTop + (i + 1) * 30 + 10;
+  const subtotalPosition = invoiceTableTop + (i + 1) * 30 + 5;
   generateTableRow(
     doc,
     subtotalPosition,
@@ -80,7 +80,18 @@ export function generateInvoiceTable(doc, y, order: Order, items: LineItem[]) {
     false
   );
 
-  const shippingPosition = subtotalPosition + 22;
+  const discountPosition = subtotalPosition + 22;
+  generateTableRow(
+    doc,
+    discountPosition,
+    "",
+    "",
+    "Discount:",
+    amountToDisplay(order.discount_total, order.currency_code),
+    false
+  );
+
+  const shippingPosition = discountPosition + 22;
   generateTableRow(
     doc,
     shippingPosition,
@@ -91,10 +102,10 @@ export function generateInvoiceTable(doc, y, order: Order, items: LineItem[]) {
     false
   );
 
-  const taxsgstPosition = shippingPosition + 22;
+  const taxcgstPosition = shippingPosition + 22;
   generateTableRow(
     doc,
-    taxsgstPosition,
+    taxcgstPosition,
     "",
     "",
     "CGST (9%):",
@@ -102,10 +113,10 @@ export function generateInvoiceTable(doc, y, order: Order, items: LineItem[]) {
     false
   );
 
-  const taxcgstPosition = taxsgstPosition + 22;
+  const taxsgstPosition = taxcgstPosition + 22;
   generateTableRow(
     doc,
-    taxcgstPosition,
+    taxsgstPosition,
     "",
     "",
     "SGST (9%):",
@@ -113,7 +124,21 @@ export function generateInvoiceTable(doc, y, order: Order, items: LineItem[]) {
     false
   );
 
-  const totalPosition = taxcgstPosition + 22;
+  const orgTaxPosition = taxsgstPosition + 22;
+  generateTableRow(
+    doc,
+    orgTaxPosition,
+    "",
+    "",
+    "Original Price(Incl Tax):",
+    amountToDisplay(
+      order.subtotal + order.tax_total + order.shipping_total,
+      order.currency_code
+    ),
+    false
+  );
+
+  const totalPosition = orgTaxPosition + 22;
   generateTableRow(
     doc,
     totalPosition,
