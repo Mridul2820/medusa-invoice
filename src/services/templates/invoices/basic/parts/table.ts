@@ -1,17 +1,19 @@
 import { LineItem, Order } from "@medusajs/medusa";
-import { OrderStatus } from "@medusajs/utils";
 import path from "path";
 import { getDecimalDigits } from "../../../../utils/currency";
 
-function amountToDisplay(amount: number, currencyCode: string): string {
+export const amountToDisplay = (
+  amount: number,
+  currencyCode: string
+): string => {
   const decimalDigits = getDecimalDigits(currencyCode);
   return `₹${(amount / Math.pow(10, decimalDigits)).toFixed(decimalDigits)}`;
-}
+};
 
 function generateTableRow(doc, y, item, quantity, unitCost, lineTotal, bg) {
   if (bg) {
     doc
-      .roundedRect(50, y - 5, 500, 20, 5)
+      .roundedRect(50, y - 6, 500, 20, 3)
       .fillColor("#000000")
       .fill();
     doc.fillColor("#FFFFFF");
@@ -129,9 +131,7 @@ export function generateInvoiceTable(doc, y, order: Order, items: LineItem[]) {
     "",
     "",
     "Amount Paid:",
-    order?.status === ("captured" as OrderStatus)
-      ? "{'\u20B9'}.00"
-      : amountToDisplay(order.total, order.currency_code),
+    amountToDisplay(order.paid_total, order.currency_code),
     false
   );
 
