@@ -20,9 +20,11 @@ function generateTableRow(doc, y, item, quantity, unitCost, lineTotal, bg) {
 
   doc
     .fontSize(10)
+    .font("Helvetica-Bold")
     .text(item, 55, y)
-    .text(quantity, 280, y, { width: 90, align: "left" })
-    .text(unitCost, 370, y, { width: 90, align: "right" })
+    .font("Helvetica")
+    .text(quantity, 200, y, { width: 90, align: "left" })
+    .text(unitCost, 300, y, { width: 90, align: "right" })
     .text(lineTotal, 0, y, { align: "right" });
 }
 
@@ -71,7 +73,7 @@ export function generateInvoiceTable(doc, y, order: Order, items: LineItem[]) {
     shippingPosition,
     "",
     "",
-    "Shipping",
+    "Shipping:",
     amountToDisplay(order.shipping_total, order.currency_code),
     false
   );
@@ -93,7 +95,7 @@ export function generateInvoiceTable(doc, y, order: Order, items: LineItem[]) {
     totalPosition,
     "",
     "",
-    "Total",
+    "Total:",
     amountToDisplay(order.total, order.currency_code),
     false
   );
