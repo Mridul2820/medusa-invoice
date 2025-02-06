@@ -78,18 +78,29 @@ export function generateInvoiceTable(doc, y, order: Order, items: LineItem[]) {
     false
   );
 
-  const taxPosition = shippingPosition + 22;
+  const taxsgstPosition = shippingPosition + 22;
   generateTableRow(
     doc,
-    taxPosition,
+    taxsgstPosition,
     "",
     "",
-    "GST (18%):",
-    amountToDisplay(order.tax_total, order.currency_code),
+    "CGST (9%):",
+    amountToDisplay(order.tax_total / 2, order.currency_code),
     false
   );
 
-  const totalPosition = taxPosition + 22;
+  const taxcgstPosition = taxsgstPosition + 22;
+  generateTableRow(
+    doc,
+    taxcgstPosition,
+    "",
+    "",
+    "SGST (9%):",
+    amountToDisplay(order.tax_total / 2, order.currency_code),
+    false
+  );
+
+  const totalPosition = taxcgstPosition + 22;
   generateTableRow(
     doc,
     totalPosition,
