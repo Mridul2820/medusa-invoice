@@ -4,7 +4,9 @@ import { getDecimalDigits } from "../../../../utils/currency";
 
 function amountToDisplay(amount: number, currencyCode: string): string {
   const decimalDigits = getDecimalDigits(currencyCode);
-  return `₹${(amount / Math.pow(10, decimalDigits)).toFixed(decimalDigits)}`;
+  return `{'\u20B9'}${(amount / Math.pow(10, decimalDigits)).toFixed(
+    decimalDigits
+  )}`;
 }
 
 function generateTableRow(doc, y, item, quantity, unitCost, lineTotal, bg) {
@@ -119,7 +121,7 @@ export function generateInvoiceTable(doc, y, order: Order, items: LineItem[]) {
     "",
     "Amount Paid:",
     order?.status === ("captured" as OrderStatus)
-      ? "₹0.00"
+      ? "{'\u20B9'}.00"
       : amountToDisplay(order.total, order.currency_code),
     false
   );

@@ -30,9 +30,9 @@ export function generateHeaderForLogo(
       baseY + 25,
       { align: "left", width: 215 }
     )
-    .text("Email: care@terrapy.in", 50, baseY + 65, { align: "left" })
-    .text("Mobile: 9090909090", 50, baseY + 80, { align: "left" })
-    .text("GST: ABC123456789ABC", 50, baseY + 95, { align: "left" });
+    .text("Email: care@terrapy.in", 50, baseY + 60, { align: "left" })
+    .text("Mobile: 9090909090", 50, baseY + 75, { align: "left" })
+    .text("GST: ABC123456789ABC", 50, baseY + 90, { align: "left" });
   const heightOfAddress = doc.heightOfString(
     documentSettings.store_address.address_1,
     { width: 250 }
