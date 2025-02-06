@@ -7,13 +7,9 @@ export function generateInvoiceInformation(
   y: number,
   invoice: Invoice
 ): number {
-  doc
-    .fillColor("#444444")
-    .fontSize(32)
-    .font("Helvetica-SemiBold")
-    .text("INVOICE", 40, 50, {
-      align: "right",
-    });
+  doc.fillColor("#444444").fontSize(32).text("INVOICE", 40, 50, {
+    align: "right",
+  });
 
   doc.fontSize(14).text(invoice.display_number, 40, 86, {
     align: "right",

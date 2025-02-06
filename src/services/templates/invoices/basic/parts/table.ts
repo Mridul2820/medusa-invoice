@@ -1,20 +1,28 @@
 import { LineItem, Order } from "@medusajs/medusa";
-import { generateHr } from "./hr";
 import { getDecimalDigits } from "../../../../utils/currency";
+import { OrderStatus } from "@medusajs/utils";
 
 function amountToDisplay(amount: number, currencyCode: string): string {
   const decimalDigits = getDecimalDigits(currencyCode);
-  return `${(amount / Math.pow(10, decimalDigits)).toFixed(
-    decimalDigits
-  )} ${currencyCode.toUpperCase()}`;
+  return `₹${(amount / Math.pow(10, decimalDigits)).toFixed(decimalDigits)}`;
 }
 
-function generateTableRow(doc, y, item, unitCost, quantity, lineTotal) {
+function generateTableRow(doc, y, item, quantity, unitCost, lineTotal, bg) {
+  if (bg) {
+    doc
+      .roundedRect(50, y - 5, 500, 20, 5)
+      .fillColor("#000000")
+      .fill();
+    doc.fillColor("#FFFFFF");
+  } else {
+    doc.fillColor("#000000");
+  }
+
   doc
     .fontSize(10)
-    .text(item, 50, y)
+    .text(item, 55, y)
+    .text(quantity, 370, y, { width: 90, align: "left" })
     .text(unitCost, 280, y, { width: 90, align: "right" })
-    .text(quantity, 370, y, { width: 90, align: "right" })
     .text(lineTotal, 0, y, { align: "right" });
 }
 
@@ -22,8 +30,15 @@ export function generateInvoiceTable(doc, y, order: Order, items: LineItem[]) {
   let i;
   const invoiceTableTop = y + 15;
 
-  generateTableRow(doc, invoiceTableTop, "Item", "Quantity", "Rate", "Amount");
-  generateHr(doc, invoiceTableTop + 20);
+  generateTableRow(
+    doc,
+    invoiceTableTop,
+    "Item",
+    "Quantity",
+    "Rate",
+    "Amount",
+    true
+  );
 
   for (i = 0; i < items.length; i++) {
     const item = items[i];
@@ -34,40 +49,66 @@ export function generateInvoiceTable(doc, y, order: Order, items: LineItem[]) {
       item.title,
       item.quantity,
       amountToDisplay(item.total / item.quantity, order.currency_code),
-      amountToDisplay(item.total, order.currency_code)
+      amountToDisplay(item.total, order.currency_code),
+      false
     );
-
-    generateHr(doc, position + 20);
   }
 
-  const subtotalPosition = invoiceTableTop + (i + 1) * 30;
+  const subtotalPosition = invoiceTableTop + (i + 1) * 30 + 30;
   generateTableRow(
     doc,
     subtotalPosition,
     "",
     "",
-    "Shipping",
-    amountToDisplay(order.shipping_total, order.currency_code)
+    "Subtotal:",
+    amountToDisplay(order.subtotal, order.currency_code),
+    false
   );
 
-  const taxPosition = subtotalPosition + 30;
+  const shippingPosition = subtotalPosition + 25;
+  generateTableRow(
+    doc,
+    shippingPosition,
+    "",
+    "",
+    "Shipping",
+    amountToDisplay(order.shipping_total, order.currency_code),
+    false
+  );
+
+  const taxPosition = subtotalPosition + 25;
   generateTableRow(
     doc,
     taxPosition,
     "",
     "",
-    "GST (12%):",
-    amountToDisplay(order.tax_total, order.currency_code)
+    "GST (18%):",
+    amountToDisplay(order.tax_total, order.currency_code),
+    false
   );
 
-  const duePosition = taxPosition + 45;
+  const totalPosition = taxPosition + 25;
+  generateTableRow(
+    doc,
+    totalPosition,
+    "",
+    "",
+    "Total",
+    amountToDisplay(order.total, order.currency_code),
+    false
+  );
+
+  const duePosition = totalPosition + 25;
   generateTableRow(
     doc,
     duePosition,
     "",
     "",
-    "Total",
-    amountToDisplay(order.total, order.currency_code)
+    "Amount Paid:",
+    order?.status === ("captured" as OrderStatus)
+      ? "₹0.00"
+      : amountToDisplay(order.total, order.currency_code),
+    false
   );
 
   return duePosition + 30;
