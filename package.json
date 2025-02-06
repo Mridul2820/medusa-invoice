@@ -1,6 +1,6 @@
 {
   "name": "medusa-invoice",
-  "version": "0.0.37",
+  "version": "0.0.40",
   "description": "Generate invoice from Medusa",
   "main": "dist/index.js",
   "author": "Mridul",

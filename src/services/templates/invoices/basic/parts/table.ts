@@ -4,9 +4,7 @@ import { getDecimalDigits } from "../../../../utils/currency";
 
 function amountToDisplay(amount: number, currencyCode: string): string {
   const decimalDigits = getDecimalDigits(currencyCode);
-  return `{'\u20B9'}${(amount / Math.pow(10, decimalDigits)).toFixed(
-    decimalDigits
-  )}`;
+  return `₹${(amount / Math.pow(10, decimalDigits)).toFixed(decimalDigits)}`;
 }
 
 function generateTableRow(doc, y, item, quantity, unitCost, lineTotal, bg) {
