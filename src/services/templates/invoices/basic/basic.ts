@@ -35,7 +35,12 @@ export default async (
   doc.on("data", buffers.push.bind(buffers));
 
   const endHeader = generateHeader(doc, 50, settings);
-  const endInvoiceInfo = generateInvoiceInformation(doc, endHeader, invoice);
+  const endInvoiceInfo = generateInvoiceInformation(
+    doc,
+    endHeader,
+    invoice,
+    order
+  );
   const endY = generateCustomerInformation(doc, endInvoiceInfo, order);
   generateInvoiceTable(doc, endY, order, order.items);
 

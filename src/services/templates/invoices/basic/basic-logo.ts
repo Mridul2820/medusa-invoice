@@ -38,7 +38,7 @@ export default async (
 
   const endHeader = generateHeaderForLogo(doc, 50, settings);
   await generateHeaderLogo(doc, 50, settings.store_logo_source);
-  const endInvoice = generateInvoiceInformation(doc, endHeader, invoice);
+  const endInvoice = generateInvoiceInformation(doc, endHeader, invoice, order);
   const endDetails = generateCustomerInformation(doc, endInvoice, order);
   const endTable = generateInvoiceTable(doc, endDetails, order, order.items);
   generateTnc(doc, endTable);

@@ -1,12 +1,25 @@
 import dayjs from "dayjs";
-import { OrderStatus } from "@medusajs/utils";
+import path from "path";
 import { Invoice } from "../../../../../models/invoice";
+import { amountToDisplay } from "./table";
+import { Order } from "@medusajs/medusa";
 
 export function generateInvoiceInformation(
   doc,
   y: number,
-  invoice: Invoice
+  invoice: Invoice,
+  order: Order
 ): number {
+  doc.registerFont(
+    "Regular",
+    path.resolve(__dirname, "../../../../../fonts/NotoSans-Regular.ttf")
+  );
+  doc.registerFont(
+    "Bold",
+    path.resolve(__dirname, "../../../../../fonts/NotoSans-Bold.ttf")
+  );
+  doc.font("Regular");
+
   doc.fillColor("#444444").fontSize(32).text("INVOICE", 40, 50, {
     align: "right",
   });
@@ -26,7 +39,7 @@ export function generateInvoiceInformation(
     },
     {
       label: "Payment Terms:",
-      value: invoice?.order?.payment_status === "captured" ? "Prepaid" : "COD",
+      value: order?.payment_status,
     },
     {
       label: "Due Date:",
@@ -36,9 +49,9 @@ export function generateInvoiceInformation(
     {
       label: "Balance Due:",
       value:
-        invoice?.order?.status === ("captured" as OrderStatus)
+        order?.payment_status === "captured"
           ? "₹0.00"
-          : invoice?.order?.total,
+          : amountToDisplay(order?.total, order?.currency_code),
     },
   ];
 
@@ -70,7 +83,7 @@ export function generateInvoiceInformation(
       .text(detail.value, startX + 10, currentY, { align: "right" });
 
     if (detail.label === "Balance Due:") {
-      doc.rect(startX + 150, currentY - 5, 220, 25).fill("#f5f5f5");
+      doc.roundedRect(startX + 150, currentY - 5, 220, 25, 3).fill("#f5f5f5");
 
       doc
         .font(labelStyle.font)
