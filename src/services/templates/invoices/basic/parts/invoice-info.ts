@@ -14,10 +14,6 @@ export function generateInvoiceInformation(
     "Regular",
     path.resolve(__dirname, "../../../../../fonts/NotoSans-Regular.ttf")
   );
-  doc.registerFont(
-    "Bold",
-    path.resolve(__dirname, "../../../../../fonts/NotoSans-Bold.ttf")
-  );
   doc.font("Regular");
 
   doc.fillColor("#444444").fontSize(32).text("INVOICE", 40, 50, {
@@ -39,7 +35,9 @@ export function generateInvoiceInformation(
     },
     {
       label: "Payment Terms:",
-      value: order?.payment_status,
+      value:
+        order?.payment_status.slice(0, 1).toUpperCase() +
+        order?.payment_status.slice(1),
     },
     {
       label: "Due Date:",
@@ -58,13 +56,13 @@ export function generateInvoiceInformation(
   let currentY = startY;
 
   const labelStyle = {
-    font: "Helvetica",
+    font: "Regular",
     fontSize: 10,
     color: "#666666",
   };
 
   const valueStyle = {
-    font: "Helvetica",
+    font: "Regular",
     fontSize: 10,
     color: "#000000",
   };
