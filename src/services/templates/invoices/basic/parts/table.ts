@@ -21,8 +21,8 @@ function generateTableRow(doc, y, item, quantity, unitCost, lineTotal, bg) {
   doc
     .fontSize(10)
     .text(item, 55, y)
-    .text(quantity, 370, y, { width: 90, align: "left" })
-    .text(unitCost, 280, y, { width: 90, align: "right" })
+    .text(quantity, 280, y, { width: 90, align: "left" })
+    .text(unitCost, 370, y, { width: 90, align: "right" })
     .text(lineTotal, 0, y, { align: "right" });
 }
 
@@ -54,7 +54,7 @@ export function generateInvoiceTable(doc, y, order: Order, items: LineItem[]) {
     );
   }
 
-  const subtotalPosition = invoiceTableTop + (i + 1) * 30 + 30;
+  const subtotalPosition = invoiceTableTop + (i + 1) * 30 + 20;
   generateTableRow(
     doc,
     subtotalPosition,
@@ -65,7 +65,7 @@ export function generateInvoiceTable(doc, y, order: Order, items: LineItem[]) {
     false
   );
 
-  const shippingPosition = subtotalPosition + 25;
+  const shippingPosition = subtotalPosition + 22;
   generateTableRow(
     doc,
     shippingPosition,
@@ -76,7 +76,7 @@ export function generateInvoiceTable(doc, y, order: Order, items: LineItem[]) {
     false
   );
 
-  const taxPosition = subtotalPosition + 25;
+  const taxPosition = shippingPosition + 22;
   generateTableRow(
     doc,
     taxPosition,
@@ -87,7 +87,7 @@ export function generateInvoiceTable(doc, y, order: Order, items: LineItem[]) {
     false
   );
 
-  const totalPosition = taxPosition + 25;
+  const totalPosition = taxPosition + 22;
   generateTableRow(
     doc,
     totalPosition,
@@ -98,7 +98,7 @@ export function generateInvoiceTable(doc, y, order: Order, items: LineItem[]) {
     false
   );
 
-  const duePosition = totalPosition + 25;
+  const duePosition = totalPosition + 22;
   generateTableRow(
     doc,
     duePosition,
