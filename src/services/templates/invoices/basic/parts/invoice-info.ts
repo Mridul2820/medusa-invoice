@@ -91,7 +91,7 @@ export function generateInvoiceInformation(
         .font(valueStyle.font)
         .fontSize(valueStyle.fontSize)
         .fillColor("#000000")
-        .text(detail.value, startX + 10, currentY + 3, { align: "right" });
+        .text(detail.value, startX + 10, currentY + 2, { align: "right" });
     }
 
     currentY += lineSpacing;

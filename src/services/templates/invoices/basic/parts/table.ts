@@ -50,7 +50,7 @@ export function generateInvoiceTable(doc, y, order: Order, items: LineItem[]) {
     invoiceTableTop,
     "Item",
     "Quantity",
-    "Rate",
+    "Unit Cost",
     "Amount",
     true
   );
@@ -63,7 +63,10 @@ export function generateInvoiceTable(doc, y, order: Order, items: LineItem[]) {
       position,
       item.title,
       item.quantity,
-      amountToDisplay(item.total / item.quantity, order.currency_code),
+      amountToDisplay(
+        (item.unit_price * 1.18) / item.quantity,
+        order.currency_code
+      ),
       amountToDisplay(item.total, order.currency_code),
       false
     );
@@ -87,7 +90,7 @@ export function generateInvoiceTable(doc, y, order: Order, items: LineItem[]) {
     "",
     "",
     "Discount:",
-    amountToDisplay(order.discount_total, order.currency_code),
+    "-" + amountToDisplay(order.discount_total, order.currency_code),
     false
   );
 
@@ -124,21 +127,7 @@ export function generateInvoiceTable(doc, y, order: Order, items: LineItem[]) {
     false
   );
 
-  const orgTaxPosition = taxsgstPosition + 22;
-  generateTableRow(
-    doc,
-    orgTaxPosition,
-    "",
-    "",
-    "Original Price(Incl Tax):",
-    amountToDisplay(
-      order.subtotal + order.tax_total + order.shipping_total,
-      order.currency_code
-    ),
-    false
-  );
-
-  const totalPosition = orgTaxPosition + 22;
+  const totalPosition = taxsgstPosition + 22;
   generateTableRow(
     doc,
     totalPosition,
@@ -149,16 +138,5 @@ export function generateInvoiceTable(doc, y, order: Order, items: LineItem[]) {
     false
   );
 
-  const duePosition = totalPosition + 22;
-  generateTableRow(
-    doc,
-    duePosition,
-    "",
-    "",
-    "Amount Paid:",
-    amountToDisplay(order.paid_total, order.currency_code),
-    false
-  );
-
-  return duePosition + 30;
+  return totalPosition + 30;
 }
