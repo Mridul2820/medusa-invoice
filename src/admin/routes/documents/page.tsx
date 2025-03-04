@@ -15,13 +15,6 @@ const DocumentsPage = () => {
         <Tabs.Trigger value="orders">Orders</Tabs.Trigger>
         <Tabs.Trigger value="templates">Templates</Tabs.Trigger>
         <Tabs.Trigger value="settings">Settings</Tabs.Trigger>
-        {process.env.MEDUSA_ADMIN_MEDUSA_DOCUMENTS_HIDE_PRO === undefined && (
-          <Grid container justifyContent={"end"}>
-            <Tabs.Trigger value="pro" style={{ color: "purple" }}>
-              Pro version
-            </Tabs.Trigger>
-          </Grid>
-        )}
       </Tabs.List>
       <Tabs.Content value="orders">
         <Box height={20}></Box>
