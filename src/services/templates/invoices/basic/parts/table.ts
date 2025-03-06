@@ -63,10 +63,7 @@ export function generateInvoiceTable(doc, y, order: Order, items: LineItem[]) {
       position,
       item.title,
       item.quantity,
-      amountToDisplay(
-        (item.unit_price * 1.18) / item.quantity,
-        order.currency_code
-      ),
+      amountToDisplay(item.unit_price * 1.18, order.currency_code),
       amountToDisplay(item.total, order.currency_code),
       false
     );
