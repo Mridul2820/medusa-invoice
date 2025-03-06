@@ -50,6 +50,16 @@ export function generateCustomerInformation(doc, y, order: Order) {
         customerInformationTop + 15,
         { align: "left" }
       )
+      .text(
+        `${
+          order.shipping_address.phone ||
+          order?.billing_address?.phone ||
+          order?.customer?.phone
+        }`,
+        230,
+        customerInformationTop + 15,
+        { align: "left" }
+      )
       .font("Helvetica")
       .text(
         `${order.shipping_address.city} ${order.shipping_address.postal_code}`,
