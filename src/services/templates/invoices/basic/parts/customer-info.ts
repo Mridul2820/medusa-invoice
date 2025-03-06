@@ -51,27 +51,27 @@ export function generateCustomerInformation(doc, y, order: Order) {
         { align: "left" }
       )
       .text(
-        `${
+        `Phone: ${
           order.shipping_address.phone ||
           order?.billing_address?.phone ||
           order?.customer?.phone
         }`,
         230,
-        customerInformationTop + 15,
+        customerInformationTop + 30,
         { align: "left" }
       )
       .font("Helvetica")
       .text(
         `${order.shipping_address.city} ${order.shipping_address.postal_code}`,
         230,
-        customerInformationTop + 30,
+        customerInformationTop + 45,
         { align: "left" }
       )
       .moveDown();
     const shipAddress = order.shipping_address.address_1;
     heightOfShipToAddress = doc.heightOfString(shipAddress, { width: 150 });
     doc
-      .text(shipAddress, 230, customerInformationTop + 45, {
+      .text(shipAddress, 230, customerInformationTop + 60, {
         align: "left",
         width: 150,
       })
@@ -80,16 +80,16 @@ export function generateCustomerInformation(doc, y, order: Order) {
 
   if (heightOfBillToAddress && heightOfShipToAddress) {
     if (heightOfShipToAddress > heightOfBillToAddress) {
-      return customerInformationTop + 45 + heightOfShipToAddress;
+      return customerInformationTop + 60 + heightOfShipToAddress;
     } else {
-      return customerInformationTop + 45 + heightOfBillToAddress;
+      return customerInformationTop + 60 + heightOfBillToAddress;
     }
   }
   if (heightOfBillToAddress) {
-    return customerInformationTop + 45 + heightOfBillToAddress;
+    return customerInformationTop + 60 + heightOfBillToAddress;
   }
   if (heightOfShipToAddress) {
-    return customerInformationTop + 45 + heightOfShipToAddress;
+    return customerInformationTop + 60 + heightOfShipToAddress;
   }
 
   return customerInformationTop;
