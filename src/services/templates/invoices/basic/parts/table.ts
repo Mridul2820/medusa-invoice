@@ -10,7 +10,16 @@ export const amountToDisplay = (
   return `₹${(amount / Math.pow(10, decimalDigits)).toFixed(decimalDigits)}`;
 };
 
-function generateTableRow(doc, y, item, quantity, unitCost, lineTotal, bg) {
+function generateTableRow(
+  doc,
+  y,
+  item,
+  hsn,
+  quantity,
+  unitCost,
+  lineTotal,
+  bg
+) {
   if (bg) {
     doc
       .roundedRect(50, y - 3, 500, 20, 3)
@@ -26,6 +35,7 @@ function generateTableRow(doc, y, item, quantity, unitCost, lineTotal, bg) {
     .font("Bold")
     .text(item, 58, y)
     .font("Regular")
+    .text(hsn, 250, y, { width: 90, align: "left" })
     .text(quantity, 250, y, { width: 90, align: "left" })
     .text(unitCost, 340, y, { width: 130, align: "right" })
     .text(lineTotal, 0, y, { align: "right" });
@@ -49,6 +59,7 @@ export function generateInvoiceTable(doc, y, order: Order, items: LineItem[]) {
     doc,
     invoiceTableTop,
     "Item",
+    "HSN",
     "Quantity",
     "Unit Cost",
     "Amount",
@@ -62,6 +73,7 @@ export function generateInvoiceTable(doc, y, order: Order, items: LineItem[]) {
       doc,
       position,
       item.title,
+      "21069099",
       item.quantity,
       amountToDisplay(item.unit_price * 1.18, order.currency_code),
       amountToDisplay(item.total, order.currency_code),
@@ -75,6 +87,7 @@ export function generateInvoiceTable(doc, y, order: Order, items: LineItem[]) {
     subtotalPosition,
     "",
     "",
+    "",
     "Subtotal:",
     amountToDisplay(order.subtotal, order.currency_code),
     false
@@ -84,6 +97,7 @@ export function generateInvoiceTable(doc, y, order: Order, items: LineItem[]) {
   generateTableRow(
     doc,
     discountPosition,
+    "",
     "",
     "",
     "Discount:",
@@ -97,6 +111,7 @@ export function generateInvoiceTable(doc, y, order: Order, items: LineItem[]) {
     shippingPosition,
     "",
     "",
+    "",
     "Shipping:",
     amountToDisplay(order.shipping_total, order.currency_code),
     false
@@ -106,6 +121,7 @@ export function generateInvoiceTable(doc, y, order: Order, items: LineItem[]) {
   generateTableRow(
     doc,
     taxcgstPosition,
+    "",
     "",
     "",
     "CGST (9%):",
@@ -119,6 +135,7 @@ export function generateInvoiceTable(doc, y, order: Order, items: LineItem[]) {
     taxsgstPosition,
     "",
     "",
+    "",
     "SGST (9%):",
     amountToDisplay(order.tax_total / 2, order.currency_code),
     false
@@ -128,6 +145,7 @@ export function generateInvoiceTable(doc, y, order: Order, items: LineItem[]) {
   generateTableRow(
     doc,
     totalPosition,
+    "",
     "",
     "",
     "Total:",
