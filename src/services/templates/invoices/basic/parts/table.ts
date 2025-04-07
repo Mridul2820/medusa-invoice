@@ -35,8 +35,8 @@ function generateTableRow(
     .font("Bold")
     .text(item, 58, y)
     .font("Regular")
-    .text(hsn, 250, y, { width: 90, align: "left" })
-    .text(quantity, 250, y, { width: 90, align: "left" })
+    .text(hsn, 240, y, { width: 60, align: "left" })
+    .text(quantity, 300, y, { width: 90, align: "left" })
     .text(unitCost, 340, y, { width: 130, align: "right" })
     .text(lineTotal, 0, y, { align: "right" });
 }

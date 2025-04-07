@@ -1,6 +1,6 @@
 {
   "name": "medusa-invoice",
-  "version": "0.0.59",
+  "version": "0.0.60",
   "description": "Generate invoice from Medusa",
   "main": "dist/index.js",
   "author": "Mridul",
@@ -9,14 +9,6 @@
     "type": "git",
     "url": "https://github.com/Mridul2820/medusa-invoice"
   },
-  "keywords": [
-    "medusa-plugin",
-    "medusa-plugin-other",
-    "medusa-plugin-documents",
-    "documents",
-    "invoice",
-    "pdf"
-  ],
   "scripts": {
     "clean": "cross-env ./node_modules/.bin/rimraf dist",
     "copy-assets": "cp -rv src/fonts dist/fonts",
