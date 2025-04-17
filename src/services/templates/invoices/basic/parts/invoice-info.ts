@@ -20,7 +20,7 @@ export function generateInvoiceInformation(
     align: "right",
   });
 
-  doc.fontSize(14).text(`Invoice No: ${order.display_id}`, 40, 86, {
+  doc.fontSize(14).text(`Invoice No: #${order.display_id}`, 40, 86, {
     align: "right",
   });
 
