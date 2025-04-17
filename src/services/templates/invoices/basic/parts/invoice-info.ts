@@ -16,11 +16,15 @@ export function generateInvoiceInformation(
   );
   doc.font("Regular");
 
-  doc.fillColor("#444444").fontSize(32).text("INVOICE", 40, 50, {
+  doc.fillColor("#444444").fontSize(32).text("TAX INVOICE", 40, 50, {
     align: "right",
   });
 
-  doc.fontSize(14).text(`#Order${order.display_id}`, 40, 86, {
+  doc.fontSize(14).text(`Invoice No: ${order.display_id}`, 40, 86, {
+    align: "right",
+  });
+
+  doc.fontSize(14).text(`Order No: ${order.id}`, 40, 112, {
     align: "right",
   });
 
