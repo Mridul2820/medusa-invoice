@@ -24,11 +24,11 @@ export function generateInvoiceInformation(
     align: "right",
   });
 
-  doc.fontSize(14).text(`Order No: ${order.id}`, 40, 112, {
+  doc.fontSize(114).text(`Order No: ${order.id}`, 40, 100, {
     align: "right",
   });
 
-  const startX = 180;
+  const startX = 190;
   const startY = 120;
   const lineSpacing = 25;
 
