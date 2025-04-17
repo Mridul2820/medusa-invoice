@@ -24,12 +24,12 @@ export function generateInvoiceInformation(
     align: "right",
   });
 
-  doc.fontSize(114).text(`Order No: ${order.id}`, 40, 100, {
+  doc.fontSize(9).text(`Order No: ${order.id}`, 40, 105, {
     align: "right",
   });
 
   const startX = 190;
-  const startY = 120;
+  const startY = 125;
   const lineSpacing = 25;
 
   const invoiceDetails = [
@@ -91,7 +91,7 @@ export function generateInvoiceInformation(
         .font(labelStyle.font)
         .fontSize(labelStyle.fontSize)
         .fillColor("#000000")
-        .text(detail.label, startX + 170, currentY + 3, { align: "left" })
+        .text(detail.label, startX + 170, currentY + 6, { align: "left" })
         .font(valueStyle.font)
         .fontSize(valueStyle.fontSize)
         .fillColor("#000000")
