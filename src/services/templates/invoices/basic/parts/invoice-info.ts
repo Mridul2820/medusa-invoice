@@ -20,11 +20,11 @@ export function generateInvoiceInformation(
     align: "right",
   });
 
-  doc.fontSize(14).text(`Invoice No: #${order.display_id}`, 40, 86, {
+  doc.fontSize(14).text(`Order Number: #${order.display_id}`, 40, 86, {
     align: "right",
   });
 
-  doc.fontSize(9).text(`Order No: ${order.id}`, 40, 105, {
+  doc.fontSize(9).text(`Reference Number: ${order.id}`, 40, 105, {
     align: "right",
   });
 
