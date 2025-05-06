@@ -39,9 +39,7 @@ export function generateInvoiceInformation(
     },
     {
       label: "Payment Terms:",
-      value:
-        order?.payment_status.slice(0, 1).toUpperCase() +
-        order?.payment_status.slice(1),
+      value: order?.payment_status === "awaiting" ? "COD" : "Prepaid",
     },
     {
       label: "Due Date:",
