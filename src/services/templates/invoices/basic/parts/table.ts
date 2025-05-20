@@ -24,24 +24,18 @@ function generateTableRow(
   if (bg) {
     doc
       .roundedRect(50, y - 3, 500, 20, 3)
-      .fillColor("#000000")
+      .fillColor("#111111")
       .fill();
     doc.fillColor("#FFFFFF");
   } else {
-    doc.fillColor("#000000");
-  }
-
-  if (bold) {
-    doc.font("Bold");
-  } else {
-    doc.font("Regular");
+    doc.fillColor("#111111");
   }
 
   doc
     .fontSize(10)
     .font("Bold")
     .text(item, 58, y)
-    .font("Regular")
+    .font(bold ? "Bold" : "Regular")
     .text(hsn, 240, y, { width: 60, align: "left" })
     .text(quantity, 300, y, { width: 90, align: "left" })
     .text(unitCost, 340, y, { width: 130, align: "right" })
@@ -90,14 +84,16 @@ export function generateInvoiceTable(doc, y, order: Order, items: LineItem[]) {
     );
   }
 
-  const subtotalPosition = invoiceTableTop + (i + 1) * 30 + 5;
+  const subtotalPosition = invoiceTableTop + (i + 1) * 30;
   generateTableRow(
     doc,
     subtotalPosition,
     "",
     "",
     "",
-    `Subtotal (${order.items.length} units)`,
+    `Subtotal (${items.reduce((acc, item) => acc + item.quantity, 0)} ${
+      items.reduce((acc, item) => acc + item.quantity, 0) > 1 ? "units" : "unit"
+    })`,
     amountToDisplay(order.subtotal, order.currency_code),
     false,
     false
@@ -157,9 +153,8 @@ export function generateInvoiceTable(doc, y, order: Order, items: LineItem[]) {
     "-" +
       amountToDisplay(
         order.discounts[0]?.rule?.type === "percentage"
-          ? (order.subtotal * 1.18 * (order.discounts[0]?.rule?.value / 100)) /
-              100
-          : (order.subtotal * 1.18 - order.discounts[0]?.rule?.value) / 100,
+          ? order.subtotal * 1.18 * (order.discounts[0]?.rule?.value / 100)
+          : order.subtotal * 1.18 - order.discounts[0]?.rule?.value,
         order.currency_code
       ),
     false,
@@ -174,7 +169,7 @@ export function generateInvoiceTable(doc, y, order: Order, items: LineItem[]) {
     "",
     "",
     "Shipping Fee (Flat)",
-    amountToDisplay(150, order.currency_code),
+    amountToDisplay(15000, order.currency_code),
     false,
     false
   );
@@ -186,18 +181,18 @@ export function generateInvoiceTable(doc, y, order: Order, items: LineItem[]) {
     "",
     "",
     "",
-    order.payments[0].provider_id === "manual" ? "COD Charges" : "",
-    order.payments[0].provider_id === "manual"
-      ? amountToDisplay(150, order.currency_code)
-      : "",
+    order.payment_status === "captured" ? "" : "COD Charges",
+    order.payment_status === "captured"
+      ? ""
+      : amountToDisplay(15000, order.currency_code),
     false,
     false
   );
 
   const totalPayPosition =
-    order.payments[0].provider_id === "manual"
-      ? codFeePosition + 22
-      : shippingFeePosition + 22;
+    order.payment_status === "captured"
+      ? shippingFeePosition + 22
+      : codFeePosition + 22;
   generateTableRow(
     doc,
     totalPayPosition,
