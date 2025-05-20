@@ -89,11 +89,11 @@ export function generateInvoiceInformation(
         .font(labelStyle.font)
         .fontSize(labelStyle.fontSize)
         .fillColor("#000000")
-        .text(detail.label, startX + 170, currentY + 2, { align: "left" })
+        .text(detail.label, startX + 170, currentY + 1, { align: "left" })
         .font(valueStyle.font)
         .fontSize(valueStyle.fontSize)
         .fillColor("#000000")
-        .text(detail.value, startX + 10, currentY + 2, { align: "right" });
+        .text(detail.value, startX + 10, currentY + 1, { align: "right" });
     }
 
     currentY += lineSpacing;
