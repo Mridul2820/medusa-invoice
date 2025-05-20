@@ -18,7 +18,8 @@ function generateTableRow(
   quantity,
   unitCost,
   lineTotal,
-  bg
+  bg,
+  bold
 ) {
   if (bg) {
     doc
@@ -28,6 +29,12 @@ function generateTableRow(
     doc.fillColor("#FFFFFF");
   } else {
     doc.fillColor("#000000");
+  }
+
+  if (bold) {
+    doc.font("Bold");
+  } else {
+    doc.font("Regular");
   }
 
   doc
@@ -61,9 +68,10 @@ export function generateInvoiceTable(doc, y, order: Order, items: LineItem[]) {
     "Item",
     "HSN",
     "Quantity",
-    "Unit Cost",
-    "Amount",
-    true
+    "Description",
+    "Amount(₹)",
+    true,
+    false
   );
 
   for (i = 0; i < items.length; i++) {
@@ -75,8 +83,9 @@ export function generateInvoiceTable(doc, y, order: Order, items: LineItem[]) {
       item.title,
       "21069099",
       item.quantity,
-      amountToDisplay(item.unit_price * 1.18, order.currency_code),
-      amountToDisplay(item.total, order.currency_code),
+      "Unit Price (Before GST)",
+      amountToDisplay(item.unit_price, order.currency_code),
+      false,
       false
     );
   }
@@ -88,36 +97,13 @@ export function generateInvoiceTable(doc, y, order: Order, items: LineItem[]) {
     "",
     "",
     "",
-    "Subtotal:",
+    `Subtotal (${order.items.length} units)`,
     amountToDisplay(order.subtotal, order.currency_code),
+    false,
     false
   );
 
-  const discountPosition = subtotalPosition + 22;
-  generateTableRow(
-    doc,
-    discountPosition,
-    "",
-    "",
-    "",
-    "Discount:",
-    "-" + amountToDisplay(order.discount_total, order.currency_code),
-    false
-  );
-
-  const shippingPosition = discountPosition + 22;
-  generateTableRow(
-    doc,
-    shippingPosition,
-    "",
-    "",
-    "",
-    "Shipping:",
-    amountToDisplay(order.shipping_total, order.currency_code),
-    false
-  );
-
-  const taxcgstPosition = shippingPosition + 22;
+  const taxcgstPosition = subtotalPosition + 22;
   generateTableRow(
     doc,
     taxcgstPosition,
@@ -125,7 +111,8 @@ export function generateInvoiceTable(doc, y, order: Order, items: LineItem[]) {
     "",
     "",
     "CGST (9%):",
-    amountToDisplay(order.tax_total / 2, order.currency_code),
+    amountToDisplay(order.subtotal * 0.09, order.currency_code),
+    false,
     false
   );
 
@@ -137,7 +124,8 @@ export function generateInvoiceTable(doc, y, order: Order, items: LineItem[]) {
     "",
     "",
     "SGST (9%):",
-    amountToDisplay(order.tax_total / 2, order.currency_code),
+    amountToDisplay(order.subtotal * 0.09, order.currency_code),
+    false,
     false
   );
 
@@ -148,10 +136,79 @@ export function generateInvoiceTable(doc, y, order: Order, items: LineItem[]) {
     "",
     "",
     "",
-    "Total:",
-    amountToDisplay(order.total, order.currency_code),
+    "Total (incl. GST)",
+    amountToDisplay(order.subtotal * 1.18, order.currency_code),
+    false,
+    true
+  );
+
+  const discountPosition = totalPosition + 22;
+  generateTableRow(
+    doc,
+    discountPosition,
+    "",
+    "",
+    "",
+    `Discount (${
+      order.discounts[0]?.rule?.type === "percentage"
+        ? order.discounts[0]?.rule?.value + "%"
+        : order.discounts[0]?.rule?.value / 100
+    })`,
+    "-" +
+      amountToDisplay(
+        order.discounts[0]?.rule?.type === "percentage"
+          ? (order.subtotal * 1.18 * (order.discounts[0]?.rule?.value / 100)) /
+              100
+          : (order.subtotal * 1.18 - order.discounts[0]?.rule?.value) / 100,
+        order.currency_code
+      ),
+    false,
     false
   );
 
-  return totalPosition + 30;
+  const shippingFeePosition = discountPosition + 22;
+  generateTableRow(
+    doc,
+    shippingFeePosition,
+    "",
+    "",
+    "",
+    "Shipping Fee (Flat)",
+    amountToDisplay(150, order.currency_code),
+    false,
+    false
+  );
+
+  const codFeePosition = shippingFeePosition + 22;
+  generateTableRow(
+    doc,
+    codFeePosition,
+    "",
+    "",
+    "",
+    order.payments[0].provider_id === "manual" ? "COD Charges" : "",
+    order.payments[0].provider_id === "manual"
+      ? amountToDisplay(150, order.currency_code)
+      : "",
+    false,
+    false
+  );
+
+  const totalPayPosition =
+    order.payments[0].provider_id === "manual"
+      ? codFeePosition + 22
+      : shippingFeePosition + 22;
+  generateTableRow(
+    doc,
+    totalPayPosition,
+    "",
+    "",
+    "",
+    "Total Payable",
+    amountToDisplay(order.total, order.currency_code),
+    false,
+    true
+  );
+
+  return totalPayPosition + 30;
 }
