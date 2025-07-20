@@ -145,23 +145,29 @@ export function generateInvoiceTable(doc, y, order: Order, items: LineItem[]) {
     "",
     "",
     "",
-    `Discount (${
-      order.discounts[0]?.rule?.type === "percentage"
-        ? order.discounts[0]?.rule?.value + "%"
-        : order.discounts[0]?.rule?.value / 100
-    })`,
-    "-" +
-      amountToDisplay(
-        order.discounts[0]?.rule?.type === "percentage"
-          ? order.subtotal * 1.18 * (order.discounts[0]?.rule?.value / 100)
-          : order.subtotal * 1.18 - order.discounts[0]?.rule?.value,
-        order.currency_code
-      ),
+    order.discounts.length > 0
+      ? `Discount${` (${
+          order.discounts[0]?.rule?.type === "percentage"
+            ? order.discounts[0]?.rule?.value + "%"
+            : order.discounts[0]?.rule?.value / 100
+        })`}`
+      : "",
+    order.discounts.length > 0
+      ? "-" +
+          amountToDisplay(
+            order.discounts[0]?.rule?.type === "percentage"
+              ? order.subtotal * 1.18 * (order.discounts[0]?.rule?.value / 100)
+              : order.subtotal * 1.18 - order.discounts[0]?.rule?.value,
+            order.currency_code
+          )
+      : "",
     false,
     false
   );
 
-  const shippingFeePosition = discountPosition + 22;
+  const shippingFeePosition =
+    order.discounts.length > 0 ? discountPosition + 22 : totalPosition + 22;
+
   generateTableRow(
     doc,
     shippingFeePosition,
@@ -172,7 +178,7 @@ export function generateInvoiceTable(doc, y, order: Order, items: LineItem[]) {
     amountToDisplay(
       order?.discounts[0]?.code === "SISTERHOOD"
         ? 0
-        : order?.shipping_methods[0]?.shipping_option?.amount,
+        : order?.shipping_methods[0]?.shipping_option?.amount * 1.18,
       order.currency_code
     ),
     false,
@@ -190,7 +196,10 @@ export function generateInvoiceTable(doc, y, order: Order, items: LineItem[]) {
     order.payment_status === "captured"
       ? ""
       : amountToDisplay(
-          parseInt(order?.metadata?.codFee as any),
+          parseInt(
+            order?.shipping_methods?.[0]?.shipping_option?.metadata
+              ?.cod_charges as any
+          ) * 100,
           order?.currency_code
         ),
     false,

@@ -232,7 +232,11 @@ export default class InvoiceService extends TransactionBaseService {
         const order = await this.orderService.retrieveWithTotals(
           invoice.order.id,
           {
-            relations: ["billing_address", "shipping_address"],
+            relations: [
+              "billing_address",
+              "shipping_address",
+              "shipping_methods.shipping_option",
+            ],
           }
         );
         const calculatedTemplateKind = this.calculateTemplateKind(
@@ -271,7 +275,11 @@ export default class InvoiceService extends TransactionBaseService {
 
   async generateInvoiceForOrder(orderId: string): Promise<InvoiceResult> {
     const order = await this.orderService.retrieveWithTotals(orderId, {
-      relations: ["billing_address", "shipping_address"],
+      relations: [
+        "billing_address",
+        "shipping_address",
+        "shipping_methods.shipping_option",
+      ],
     });
     if (order) {
       const settings = await this.getLastDocumentSettings();
@@ -369,7 +377,11 @@ export default class InvoiceService extends TransactionBaseService {
       const lastOrderWithTotals = await this.orderService.retrieveWithTotals(
         lastOrder[0].id,
         {
-          relations: ["billing_address", "shipping_address"],
+          relations: [
+            "billing_address",
+            "shipping_address",
+            "shipping_methods.shipping_option",
+          ],
         }
       );
       const settings = await this.getLastDocumentSettings();
