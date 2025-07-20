@@ -169,7 +169,12 @@ export function generateInvoiceTable(doc, y, order: Order, items: LineItem[]) {
     "",
     "",
     "Shipping Fee (Flat)",
-    amountToDisplay(15000, order.currency_code),
+    amountToDisplay(
+      order?.discounts[0]?.code === "SISTERHOOD"
+        ? 0
+        : order?.shipping_methods[0]?.shipping_option?.amount,
+      order.currency_code
+    ),
     false,
     false
   );
@@ -184,7 +189,10 @@ export function generateInvoiceTable(doc, y, order: Order, items: LineItem[]) {
     order.payment_status === "captured" ? "" : "COD Charges",
     order.payment_status === "captured"
       ? ""
-      : amountToDisplay(15000, order.currency_code),
+      : amountToDisplay(
+          parseInt(order?.metadata?.codFee as any),
+          order?.currency_code
+        ),
     false,
     false
   );
