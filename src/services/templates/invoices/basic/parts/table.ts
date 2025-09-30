@@ -106,8 +106,8 @@ export function generateInvoiceTable(doc, y, order: Order, items: LineItem[]) {
     "",
     "",
     "",
-    "CGST (9%):",
-    amountToDisplay(order.subtotal * 0.09, order.currency_code),
+    `CGST (2.5%):`,
+    amountToDisplay(order.tax_total / 2, order.currency_code),
     false,
     false
   );
@@ -119,8 +119,8 @@ export function generateInvoiceTable(doc, y, order: Order, items: LineItem[]) {
     "",
     "",
     "",
-    "SGST (9%):",
-    amountToDisplay(order.subtotal * 0.09, order.currency_code),
+    `SGST (2.5%):`,
+    amountToDisplay(order.tax_total / 2, order.currency_code),
     false,
     false
   );
@@ -133,7 +133,7 @@ export function generateInvoiceTable(doc, y, order: Order, items: LineItem[]) {
     "",
     "",
     "Total (incl. GST)",
-    amountToDisplay(order.subtotal * 1.18, order.currency_code),
+    amountToDisplay(order.subtotal + order.item_tax_total, order.currency_code),
     false,
     true
   );
@@ -156,8 +156,11 @@ export function generateInvoiceTable(doc, y, order: Order, items: LineItem[]) {
       ? "-" +
           amountToDisplay(
             order.discounts[0]?.rule?.type === "percentage"
-              ? order.subtotal * 1.18 * (order.discounts[0]?.rule?.value / 100)
-              : order.subtotal * 1.18 - order.discounts[0]?.rule?.value,
+              ? (order.subtotal + order.tax_total) *
+                  (order.discounts[0]?.rule?.value / 100)
+              : order.subtotal +
+                  order.tax_total -
+                  order.discounts[0]?.rule?.value,
             order.currency_code
           )
       : "",
@@ -178,7 +181,7 @@ export function generateInvoiceTable(doc, y, order: Order, items: LineItem[]) {
     amountToDisplay(
       order?.discounts[0]?.code === "SISTERHOOD"
         ? 0
-        : order?.shipping_methods[0]?.shipping_option?.amount * 1.18,
+        : (order?.shipping_methods[0]?.price + order?.shipping_tax_total) / 3,
       order.currency_code
     ),
     false,
