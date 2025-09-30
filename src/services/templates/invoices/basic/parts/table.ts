@@ -10,6 +10,20 @@ export const amountToDisplay = (
   return `₹${(amount / Math.pow(10, decimalDigits)).toFixed(decimalDigits)}`;
 };
 
+// helper to resolve effective rate
+function getEffectiveTaxRate(order: Order, fallbackRate: number) {
+  const cutoff = new Date("2025-09-25T00:00:00Z");
+  const createdAt = new Date(order.created_at);
+
+  if (createdAt < cutoff) {
+    return fallbackRate;
+  }
+
+  // else fetch from first item tax line
+  const firstItemTaxLine = order.items?.[0]?.tax_lines?.[0];
+  return firstItemTaxLine ? firstItemTaxLine.rate / 2 : fallbackRate;
+}
+
 function generateTableRow(
   doc,
   y,
@@ -75,7 +89,7 @@ export function generateInvoiceTable(doc, y, order: Order, items: LineItem[]) {
       doc,
       position,
       item.title,
-      "21069099",
+      item?.variant?.hs_code,
       item.quantity,
       "Unit Price (Before GST)",
       amountToDisplay(item.unit_price, order.currency_code),
@@ -98,7 +112,7 @@ export function generateInvoiceTable(doc, y, order: Order, items: LineItem[]) {
     false,
     false
   );
-
+  const cgstRate = getEffectiveTaxRate(order, 9);
   const taxcgstPosition = subtotalPosition + 22;
   generateTableRow(
     doc,
@@ -106,12 +120,12 @@ export function generateInvoiceTable(doc, y, order: Order, items: LineItem[]) {
     "",
     "",
     "",
-    `CGST (2.5%):`,
+    `CGST (${cgstRate}%):`,
     amountToDisplay(order.tax_total / 2, order.currency_code),
     false,
     false
   );
-
+  const sgstRate = getEffectiveTaxRate(order, 9);
   const taxsgstPosition = taxcgstPosition + 22;
   generateTableRow(
     doc,
@@ -119,7 +133,7 @@ export function generateInvoiceTable(doc, y, order: Order, items: LineItem[]) {
     "",
     "",
     "",
-    `SGST (2.5%):`,
+    `SGST (${sgstRate}%):`,
     amountToDisplay(order.tax_total / 2, order.currency_code),
     false,
     false
@@ -181,7 +195,9 @@ export function generateInvoiceTable(doc, y, order: Order, items: LineItem[]) {
     amountToDisplay(
       order?.discounts[0]?.code === "SISTERHOOD"
         ? 0
-        : (order?.shipping_methods[0]?.price + order?.shipping_tax_total) / 3,
+        : order.metadata?.isCod
+        ? (order?.shipping_methods[0]?.price + order?.shipping_tax_total) / 3
+        : order?.shipping_methods[0]?.price + order?.shipping_tax_total,
       order.currency_code
     ),
     false,
@@ -220,7 +236,7 @@ export function generateInvoiceTable(doc, y, order: Order, items: LineItem[]) {
     "",
     "",
     "Total Payable",
-    amountToDisplay(order.total, order.currency_code),
+    amountToDisplay(Math.round(order.total), order.currency_code),
     false,
     true
   );
