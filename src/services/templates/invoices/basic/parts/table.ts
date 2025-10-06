@@ -187,7 +187,8 @@ export function generateInvoiceTable(doc, y, order: Order, items: LineItem[]) {
     } else if (discount.rule?.type === "free_shipping") {
       discountLabel += ` (Free Shipping)`;
       discountValue =
-        order?.shipping_methods?.[0]?.price + order?.shipping_tax_total || 0;
+        order?.shipping_methods?.[0]?.price +
+          order?.shipping_methods?.[0]?.tax_lines?.[0]?.rate || 0;
     }
 
     generateTableRow(
@@ -213,9 +214,14 @@ export function generateInvoiceTable(doc, y, order: Order, items: LineItem[]) {
     "",
     "Shipping Fee (Flat)",
     amountToDisplay(
-      order?.discounts[0]?.code === "SISTERHOOD"
+      order?.discounts[0]?.code === "SISTERHOOD" ||
+        order?.discounts[0]?.code === "SISTER-HOOD"
         ? 0
-        : order.metadata?.isCod
+        : order.metadata?.isCod &&
+          Math.round(
+            (order?.shipping_methods[0]?.price + order?.shipping_tax_total) /
+              100
+          ) > order?.shipping_methods[0]?.shipping_option?.metadata?.cod_charges
         ? (order?.shipping_methods[0]?.price + order?.shipping_tax_total) / 3
         : order?.shipping_methods[0]?.price + order?.shipping_tax_total,
       order.currency_code
