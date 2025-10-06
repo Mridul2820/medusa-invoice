@@ -223,7 +223,7 @@ export function generateInvoiceTable(doc, y, order: Order, items: LineItem[]) {
               100
           ) > order?.shipping_methods[0]?.shipping_option?.metadata?.cod_charges
         ? (order?.shipping_methods[0]?.price + order?.shipping_tax_total) / 3
-        : order?.shipping_methods[0]?.price + order?.shipping_tax_total,
+        : 0,
       order.currency_code
     ),
     false,
