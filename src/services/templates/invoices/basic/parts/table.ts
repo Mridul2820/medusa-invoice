@@ -67,9 +67,9 @@ export function generateInvoiceTable(doc, y, order: Order, items: LineItem[]) {
   );
   doc.font("Regular");
 
-  let i;
   const invoiceTableTop = y + 15;
 
+  // Header row
   generateTableRow(
     doc,
     invoiceTableTop,
@@ -82,9 +82,14 @@ export function generateInvoiceTable(doc, y, order: Order, items: LineItem[]) {
     false
   );
 
-  for (i = 0; i < items.length; i++) {
+  let position = invoiceTableTop;
+  let totalTax = 0;
+
+  for (let i = 0; i < items.length; i++) {
     const item = items[i];
-    const position = invoiceTableTop + (i + 1) * 30;
+
+    // Item row
+    position += 30;
     generateTableRow(
       doc,
       position,
@@ -96,12 +101,49 @@ export function generateInvoiceTable(doc, y, order: Order, items: LineItem[]) {
       false,
       false
     );
+
+    // CGST row
+    position += 20;
+    generateTableRow(
+      doc,
+      position,
+      "",
+      "",
+      "",
+      `CGST (${item.tax_lines?.[0]?.rate / 2}%)`,
+      amountToDisplay(
+        Math.round(item.original_tax_total / 2),
+        order.currency_code
+      ),
+      false,
+      false
+    );
+
+    // SGST row
+    position += 20;
+    generateTableRow(
+      doc,
+      position,
+      "",
+      "",
+      "",
+      `SGST (${item.tax_lines?.[0]?.rate / 2}%)`,
+      amountToDisplay(
+        Math.round(item.original_tax_total / 2),
+        order.currency_code
+      ),
+      false,
+      false
+    );
+
+    totalTax += item.original_tax_total;
   }
 
-  const subtotalPosition = invoiceTableTop + (i + 1) * 30;
+  // Subtotal row
+  position += 30;
   generateTableRow(
     doc,
-    subtotalPosition,
+    position,
     "",
     "",
     "",
@@ -112,82 +154,60 @@ export function generateInvoiceTable(doc, y, order: Order, items: LineItem[]) {
     false,
     false
   );
-  const cgstRate = getEffectiveTaxRate(order, 9);
-  const taxcgstPosition = subtotalPosition + 22;
-  generateTableRow(
-    doc,
-    taxcgstPosition,
-    "",
-    "",
-    "",
-    `CGST (${cgstRate}%):`,
-    amountToDisplay(order.tax_total / 2, order.currency_code),
-    false,
-    false
-  );
-  const sgstRate = getEffectiveTaxRate(order, 9);
-  const taxsgstPosition = taxcgstPosition + 22;
-  generateTableRow(
-    doc,
-    taxsgstPosition,
-    "",
-    "",
-    "",
-    `SGST (${sgstRate}%):`,
-    amountToDisplay(order.tax_total / 2, order.currency_code),
-    false,
-    false
-  );
 
-  const totalPosition = taxsgstPosition + 22;
+  // Total (incl. GST)
+  position += 22;
   generateTableRow(
     doc,
-    totalPosition,
+    position,
     "",
     "",
     "",
     "Total (incl. GST)",
-    amountToDisplay(order.subtotal + order.item_tax_total, order.currency_code),
+    amountToDisplay(order.subtotal + totalTax, order.currency_code),
     false,
     true
   );
 
-  const discountPosition = totalPosition + 22;
+  // Discount (if any)
+  if (order.discounts.length > 0) {
+    position += 22;
+
+    const discount = order.discounts[0];
+    let discountLabel = "Discount";
+    let discountValue = 0;
+
+    if (discount.rule?.type === "percentage") {
+      discountLabel += ` (${discount.rule?.value}%)`;
+      discountValue =
+        (order.subtotal + totalTax) * (discount.rule?.value / 100);
+    } else if (discount.rule?.type === "fixed") {
+      discountLabel += ` (${discount.rule?.value / 100})`;
+      discountValue = discount.rule?.value;
+    } else if (discount.rule?.type === "free_shipping") {
+      discountLabel += ` (Free Shipping)`;
+      discountValue =
+        order?.shipping_methods?.[0]?.price + order?.shipping_tax_total || 0;
+    }
+
+    generateTableRow(
+      doc,
+      position,
+      "",
+      "",
+      "",
+      discountLabel,
+      "-" + amountToDisplay(discountValue, order.currency_code),
+      false,
+      false
+    );
+  }
+
+  // Shipping Fee
+  position += 22;
   generateTableRow(
     doc,
-    discountPosition,
-    "",
-    "",
-    "",
-    order.discounts.length > 0
-      ? `Discount${` (${
-          order.discounts[0]?.rule?.type === "percentage"
-            ? order.discounts[0]?.rule?.value + "%"
-            : order.discounts[0]?.rule?.value / 100
-        })`}`
-      : "",
-    order.discounts.length > 0
-      ? "-" +
-          amountToDisplay(
-            order.discounts[0]?.rule?.type === "percentage"
-              ? (order.subtotal + order.tax_total) *
-                  (order.discounts[0]?.rule?.value / 100)
-              : order.subtotal +
-                  order.tax_total -
-                  order.discounts[0]?.rule?.value,
-            order.currency_code
-          )
-      : "",
-    false,
-    false
-  );
-
-  const shippingFeePosition =
-    order.discounts.length > 0 ? discountPosition + 22 : totalPosition + 22;
-
-  generateTableRow(
-    doc,
-    shippingFeePosition,
+    position,
     "",
     "",
     "",
@@ -204,10 +224,11 @@ export function generateInvoiceTable(doc, y, order: Order, items: LineItem[]) {
     false
   );
 
-  const codFeePosition = shippingFeePosition + 22;
+  // COD Charges
+  position += 22;
   generateTableRow(
     doc,
-    codFeePosition,
+    position,
     "",
     "",
     "",
@@ -225,13 +246,11 @@ export function generateInvoiceTable(doc, y, order: Order, items: LineItem[]) {
     false
   );
 
-  const totalPayPosition =
-    order.payment_status === "captured"
-      ? shippingFeePosition + 22
-      : codFeePosition + 22;
+  // Final Total Payable
+  position += 22;
   generateTableRow(
     doc,
-    totalPayPosition,
+    position,
     "",
     "",
     "",
@@ -241,5 +260,5 @@ export function generateInvoiceTable(doc, y, order: Order, items: LineItem[]) {
     true
   );
 
-  return totalPayPosition + 30;
+  return position + 30;
 }
