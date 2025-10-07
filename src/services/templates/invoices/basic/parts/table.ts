@@ -89,7 +89,7 @@ export function generateInvoiceTable(doc, y, order: Order, items: LineItem[]) {
     const item = items[i];
 
     // Item row
-    position += 30;
+    position += 15;
     generateTableRow(
       doc,
       position,
