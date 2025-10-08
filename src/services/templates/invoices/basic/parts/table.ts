@@ -97,7 +97,7 @@ export function generateInvoiceTable(doc, y, order: Order, items: LineItem[]) {
     const item = items[i];
 
     // Item row
-    position += 15;
+    position += 24;
     generateTableRow(
       doc,
       position,
@@ -112,7 +112,7 @@ export function generateInvoiceTable(doc, y, order: Order, items: LineItem[]) {
 
     if (shouldShowCGSTSGST) {
       // CGST row
-      position += 20;
+      position += 16;
       generateTableRow(
         doc,
         position,
@@ -129,7 +129,7 @@ export function generateInvoiceTable(doc, y, order: Order, items: LineItem[]) {
       );
 
       // SGST row
-      position += 20;
+      position += 16;
       generateTableRow(
         doc,
         position,
@@ -146,7 +146,7 @@ export function generateInvoiceTable(doc, y, order: Order, items: LineItem[]) {
       );
     } else {
       // IGST row
-      position += 20;
+      position += 16;
       generateTableRow(
         doc,
         position,

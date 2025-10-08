@@ -11,7 +11,7 @@ export function generateTnc(doc, y: number): number {
     .text(
       "If shipment is received in damaged condition, inform our customer care team within 2 working days. Any claim for damage shall not be entertained after 2 days of delivery",
       50,
-      invoiceInformationTop + 16,
+      invoiceInformationTop + 8,
       {
         align: "left",
       }
