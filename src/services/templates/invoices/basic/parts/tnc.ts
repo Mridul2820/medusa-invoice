@@ -4,14 +4,14 @@ export function generateTnc(doc, y: number): number {
   doc
     .fillColor("#666666")
     .fontSize(10)
-    .text("Terms & Condition:", 50, invoiceInformationTop, {
+    .text("Terms & Condition:", 12, invoiceInformationTop, {
       align: "left",
     })
     .fillColor("#444444")
     .text(
       "If shipment is received in damaged condition, inform our customer care team within 2 working days. Any claim for damage shall not be entertained after 2 days of delivery",
       50,
-      invoiceInformationTop + 8,
+      invoiceInformationTop + 16,
       {
         align: "left",
       }
