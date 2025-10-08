@@ -69,6 +69,14 @@ export function generateInvoiceTable(doc, y, order: Order, items: LineItem[]) {
 
   const invoiceTableTop = y + 15;
 
+  // Check if order is after October 8th, 2025 and from Maharashtra
+  const cutoffDate = new Date("2025-10-08T00:00:00Z");
+  const orderDate = new Date(order.created_at);
+  const isAfterCutoff = orderDate > cutoffDate;
+  const isMaharashtra =
+    order.shipping_address?.province?.toLowerCase() === "maharashtra";
+  const shouldShowCGSTSGST = isAfterCutoff && isMaharashtra;
+
   // Header row
   generateTableRow(
     doc,
@@ -102,39 +110,58 @@ export function generateInvoiceTable(doc, y, order: Order, items: LineItem[]) {
       false
     );
 
-    // CGST row
-    position += 20;
-    generateTableRow(
-      doc,
-      position,
-      "",
-      "",
-      "",
-      `CGST (${item.tax_lines?.[0]?.rate / 2}%)`,
-      amountToDisplay(
-        Math.round(item.original_tax_total / 2),
-        order.currency_code
-      ),
-      false,
-      false
-    );
+    if (shouldShowCGSTSGST) {
+      // CGST row
+      position += 20;
+      generateTableRow(
+        doc,
+        position,
+        "",
+        "",
+        "",
+        `CGST (${item.tax_lines?.[0]?.rate / 2}%)`,
+        amountToDisplay(
+          Math.round(item.original_tax_total / 2),
+          order.currency_code
+        ),
+        false,
+        false
+      );
 
-    // SGST row
-    position += 20;
-    generateTableRow(
-      doc,
-      position,
-      "",
-      "",
-      "",
-      `SGST (${item.tax_lines?.[0]?.rate / 2}%)`,
-      amountToDisplay(
-        Math.round(item.original_tax_total / 2),
-        order.currency_code
-      ),
-      false,
-      false
-    );
+      // SGST row
+      position += 20;
+      generateTableRow(
+        doc,
+        position,
+        "",
+        "",
+        "",
+        `SGST (${item.tax_lines?.[0]?.rate / 2}%)`,
+        amountToDisplay(
+          Math.round(item.original_tax_total / 2),
+          order.currency_code
+        ),
+        false,
+        false
+      );
+    } else {
+      // IGST row
+      position += 20;
+      generateTableRow(
+        doc,
+        position,
+        "",
+        "",
+        "",
+        `IGST (${item.tax_lines?.[0]?.rate}%)`,
+        amountToDisplay(
+          Math.round(item.original_tax_total),
+          order.currency_code
+        ),
+        false,
+        false
+      );
+    }
 
     totalTax += item.original_tax_total;
   }
@@ -221,7 +248,9 @@ export function generateInvoiceTable(doc, y, order: Order, items: LineItem[]) {
           Math.round(
             (order?.shipping_methods[0]?.price + order?.shipping_tax_total) /
               100
-          ) > order?.shipping_methods[0]?.shipping_option?.metadata?.cod_charges
+          ) >
+            (order?.shipping_methods[0]?.shipping_option?.metadata
+              ?.cod_charges as number)
         ? (order?.shipping_methods[0]?.price + order?.shipping_tax_total) / 3
         : 0,
       order.currency_code
