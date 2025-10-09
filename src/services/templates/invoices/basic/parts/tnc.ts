@@ -1,5 +1,5 @@
 export function generateTnc(doc, y: number): number {
-  const invoiceInformationTop = y + 5;
+  const invoiceInformationTop = y;
 
   doc
     .fillColor("#666666")
