@@ -4,7 +4,7 @@ export function generateTnc(doc, y: number): number {
   doc
     .fillColor("#666666")
     .fontSize(8)
-    .text("Terms & Condition:", 12, invoiceInformationTop, {
+    .text("Terms & Condition:", 50, invoiceInformationTop, {
       align: "left",
     })
     .fillColor("#444444")
