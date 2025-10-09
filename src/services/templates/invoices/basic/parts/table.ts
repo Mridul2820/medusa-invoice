@@ -71,8 +71,11 @@ export function generateInvoiceTable(doc, y, order: Order, items: LineItem[]) {
 
   // Check if order is after October 8th, 2025 and from Maharashtra
   const cutoffDate = new Date("2025-10-08T00:00:00Z");
-  const orderDate = new Date(order.created_at);
-  const isAfterCutoff = orderDate > cutoffDate;
+  const orderDate = order.created_at ? new Date(order.created_at) : null;
+  const isAfterCutoff =
+    orderDate instanceof Date &&
+    !isNaN(orderDate.getTime()) &&
+    orderDate.getTime() > cutoffDate.getTime();
   const isMaharashtra =
     order.shipping_address?.province?.toLowerCase() === "maharashtra";
   const shouldShowCGSTSGST = isAfterCutoff && isMaharashtra;
@@ -101,7 +104,7 @@ export function generateInvoiceTable(doc, y, order: Order, items: LineItem[]) {
     generateTableRow(
       doc,
       position,
-      item.title,
+      item?.variant?.title,
       item?.variant?.hs_code,
       item.quantity,
       "Unit Price (Before GST)",
