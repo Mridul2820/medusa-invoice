@@ -1,7 +1,7 @@
 import { Order } from "@medusajs/medusa";
 
 export function generateCustomerInformation(doc, y, order: Order) {
-  const customerInformationTop = y - 10;
+  const customerInformationTop = y - 20;
 
   let heightOfBillToAddress: number | undefined;
 
