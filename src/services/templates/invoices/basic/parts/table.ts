@@ -67,7 +67,7 @@ export function generateInvoiceTable(doc, y, order: Order, items: LineItem[]) {
   );
   doc.font("Regular");
 
-  const invoiceTableTop = y + 15;
+  const invoiceTableTop = y - 10;
 
   // Check if order is after October 8th, 2025 and from Maharashtra
   const cutoffDate = new Date("2025-10-08T00:00:00Z");

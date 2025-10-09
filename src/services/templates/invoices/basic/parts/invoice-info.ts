@@ -16,25 +16,25 @@ export function generateInvoiceInformation(
   );
   doc.font("Regular");
 
-  doc.fillColor("#444444").fontSize(32).text("TAX INVOICE", 40, 50, {
+  doc.fillColor("#444444").fontSize(32).text("TAX INVOICE", 40, 30, {
     align: "right",
   });
 
-  doc.fontSize(14).text(`Order Number: #${order.display_id}`, 40, 86, {
+  doc.fontSize(14).text(`Order Number: #${order.display_id}`, 40, 65, {
     align: "right",
   });
 
-  doc.fontSize(9).text(`Reference Number: ${order.id}`, 40, 105, {
+  doc.fontSize(9).text(`Reference Number: ${order.id}`, 40, 85, {
     align: "right",
   });
 
   const startX = 190;
-  const startY = 125;
+  const startY = 105;
   const lineSpacing = 25;
 
   const invoiceDetails = [
     {
-      label: "Date:",
+      label: "Order Date:",
       value: dayjs(invoice?.created_at).format("MMM DD, YYYY"),
     },
     {
