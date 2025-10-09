@@ -78,7 +78,7 @@ export function generateInvoiceTable(doc, y, order: Order, items: LineItem[]) {
     orderDate.getTime() > cutoffDate.getTime();
   const isMaharashtra =
     order.shipping_address?.province?.toLowerCase() === "maharashtra";
-  const shouldShowCGSTSGST = isAfterCutoff && isMaharashtra;
+  const shouldShowIGST = isAfterCutoff && !isMaharashtra;
 
   // Header row
   generateTableRow(
@@ -113,7 +113,24 @@ export function generateInvoiceTable(doc, y, order: Order, items: LineItem[]) {
       false
     );
 
-    if (shouldShowCGSTSGST) {
+    if (shouldShowIGST) {
+      // IGST row
+      position += 16;
+      generateTableRow(
+        doc,
+        position,
+        "",
+        "",
+        "",
+        `IGST (${item.tax_lines?.[0]?.rate}%)`,
+        amountToDisplay(
+          Math.round(item.original_tax_total),
+          order.currency_code
+        ),
+        false,
+        false
+      );
+    } else {
       // CGST row
       position += 16;
       generateTableRow(
@@ -142,23 +159,6 @@ export function generateInvoiceTable(doc, y, order: Order, items: LineItem[]) {
         `SGST (${item.tax_lines?.[0]?.rate / 2}%)`,
         amountToDisplay(
           Math.round(item.original_tax_total / 2),
-          order.currency_code
-        ),
-        false,
-        false
-      );
-    } else {
-      // IGST row
-      position += 16;
-      generateTableRow(
-        doc,
-        position,
-        "",
-        "",
-        "",
-        `IGST (${item.tax_lines?.[0]?.rate}%)`,
-        amountToDisplay(
-          Math.round(item.original_tax_total),
           order.currency_code
         ),
         false,
