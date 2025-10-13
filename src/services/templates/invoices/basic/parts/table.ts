@@ -247,15 +247,16 @@ export function generateInvoiceTable(doc, y, order: Order, items: LineItem[]) {
       order?.discounts[0]?.code === "SISTERHOOD" ||
         order?.discounts[0]?.code === "SISTER-HOOD"
         ? 0
-        : order.metadata?.isCod &&
-          Math.round(
+        : Math.round(
             (order?.shipping_methods[0]?.price + order?.shipping_tax_total) /
               100
           ) >
-            (order?.shipping_methods[0]?.shipping_option?.metadata
-              ?.cod_charges as number)
+          (order?.shipping_methods[0]?.shipping_option?.metadata
+            ?.cod_charges as number)
         ? (order?.shipping_methods[0]?.price + order?.shipping_tax_total) / 3
-        : 0,
+        : Math.round(
+            order?.shipping_methods[0]?.price + order?.shipping_tax_total
+          ),
       order.currency_code
     ),
     false,
